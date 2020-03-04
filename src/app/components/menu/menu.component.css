@@ -1,0 +1,48 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  
+  .is-mobile .toolbar {
+    position: fixed;
+    z-index: 2;
+  }
+  
+  h1.app-name {
+    margin-left: 8px;
+  }
+  
+  .sidenav-container {
+    flex: 1;
+  }
+  
+  .is-mobile .sidenav-container {
+    flex: 1 0 auto;
+  }
+  
+  .toolbar-button{
+    color: white;
+    background-color: transparent;
+  }
+
+  .profile-button{
+    background-color: transparent;
+  }
+  .exit-button{
+    background-color: transparent;
+    margin-left: 20px;
+    margin-left: 20px;
+  }
+
+  .icon {
+    padding: 0 14px;
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
