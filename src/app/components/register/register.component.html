@@ -4,29 +4,61 @@
             <mat-card-title>Register</mat-card-title>
         </mat-card-header>
 
-        <form class="example-form">
-            <mat-card-content>
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Username">
-                </mat-form-field>
+        <form class="form" name="userForm" [formGroup]="userForm">
+            <mat-card-content fxFlex="100">
+                <!-- <div fxFlex="100" fxLayoutAlign="space-around center"> -->
+                <div fxLayout="row">
+                    <div fxLayout="column">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Username" name="nome" [(ngModel)]="user.nome"
+                                [formControl]="nomeControl" required>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Lastname" name="lastname" [(ngModel)]="user.sobrenome"
+                                [formControl]="sobrenomeControl" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Email" name="email" [(ngModel)]="user.email"
+                            [formControl]="emailControl" required>
+                    </mat-form-field>
+                </div>
+                <!-- <div fxLayout="column">
+                        <mat-form-field class="full-width">
+                            <mat-label>Data Nascimento</mat-label>
+                            <input matInput [matDatepicker]="picker" name="dtNacimento" [(ngModel)]="user.dtNascimento"
+                                [formControl]="dtNascimentoControl" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker locale="pt-BR" #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div> -->
+                <div fxLayout="row">
+                    <div fxLayout="column">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Password" type="password" name="senha" minlength="6"
+                                [(ngModel)]="user.senha" [formControl]="senhaControl" required>
+                        </mat-form-field>
 
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Email">
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Password">
-                </mat-form-field>
-
-                <mat-form-field class="example-full-width">
-                    <input matInput placeholder="Retype Password">
-                </mat-form-field>
-
+                    </div>
+                    <div fxLayout="column">
+                        <mat-form-field class="full-width">
+                            <input matInput type="password" placeholder="Retype Password" name="confSenha" minlength="6"
+                                [(ngModel)]="confSenha" [formControl]="confSenhaControl" required>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="column">
+                    <button mat-stroked-button color="accent" class="btn-block" [disabled]="userForm.invalid"
+                        (click)="salvar()">Register</button>
+                </div>
+                <div fxLayout="column">
+                    <button mat-stroked-button color="accent" class="btn-block" routerLink="/login">Back</button>
+                </div>
             </mat-card-content>
-
-            <button mat-stroked-button color="accent" class="btn-block">Register</button>
-            <button mat-stroked-button color="accent" class="btn-block" routerLink="/login">Back</button>
-
         </form>
     </mat-card>
 </div>

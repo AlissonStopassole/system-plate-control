@@ -4,17 +4,14 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-// import { AngularMaterialModule } from './angular-material.module';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-// import { MatCheckboxModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatNativeDateModule, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
@@ -42,7 +39,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-
+import { AppDateAdapter, APP_DATE_FORMATS } from './app-date-adapter';
 
 import { MenuComponent } from './components/menu/menu.component';
 import { HomeComponent } from './components/home/home.component';
@@ -51,6 +48,20 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import { RegisterComponent } from './components/register/register.component';
+
+import { AngularFireModule } from "angularfire2";
+import { AngularFireAuth } from 'angularfire2/auth';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyCzdLeD0GdWoh4zjdOqJLJR7ZwsGtRkeZ0",
+  authDomain: "platecontrol-ee1d8.firebaseapp.com",
+  databaseURL: "https://platecontrol-ee1d8.firebaseio.com",
+  projectId: "platecontrol-ee1d8",
+  storageBucket: "platecontrol-ee1d8.appspot.com",
+  messagingSenderId: "868447612800",
+  appId: "1:868447612800:web:1539e9a1ed0869532f1b65",
+  measurementId: "G-05MVGZMC1G"
+};
 
 @NgModule({
   declarations: [
@@ -69,14 +80,13 @@ import { RegisterComponent } from './components/register/register.component';
     BrowserAnimationsModule,
     BrowserModule,
     BrowserAnimationsModule,
-    // AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
-    // MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatNativeDateModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatRadioModule,
@@ -102,9 +112,15 @@ import { RegisterComponent } from './components/register/register.component';
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [],
+  providers: [
+    { provide: DateAdapter, useClass: AppDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
+    { provide: AngularFireModule },
+    { provide: AngularFireAuth }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -15,8 +15,8 @@ const rotas: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'recuperar-senha', component: RecuperarSenhaComponent },
-  { path: 'home', component: MenuComponent,/*  canActivate: [AutenticacaoGuard] */ },
-  { path: 'profile', component: ProfileComponent,/*  canActivate: [AutenticacaoGuard]  */ },
+  { path: 'home', component: MenuComponent, canActivate: [AutenticacaoGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AutenticacaoGuard] },
   { path: '**', component: NotFoundComponent }
 ];
 
