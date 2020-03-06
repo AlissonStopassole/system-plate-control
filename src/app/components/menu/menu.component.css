@@ -46,3 +46,19 @@
   .spacer {
     flex: 1 1 auto;
   }
+
+  .mat-expansion-panel-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 15px;
+    border-radius: inherit;
+  }
+
+  .mat-sidenav-container{
+    margin-top: 0px !important;
+  }
+
+  .mat-nav-list{
+    border: 1px solid rgba(73,155,234,1) !important;
+  }

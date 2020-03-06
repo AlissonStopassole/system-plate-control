@@ -35,10 +35,11 @@ export class LoginComponent implements OnInit {
   login(): Promise<any> {
     return new Promise((resolve, reject) => {
       this._afAuth.auth.signInWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.senha).then((response) => {
-        console.log(response.user.uid);
-        localStorage.setItem('token', response.user.uid);
-        this.router.navigate(['/home']);
-        resolve();
+        this._afAuth.auth.currentUser.getIdToken().then((token) => {
+          localStorage.setItem('token', token);
+          this.router.navigate(['/home']);
+          resolve();
+        });
       })
         .catch((error) => {
           // Valiar erros firebase

@@ -5,11 +5,32 @@
   }
 
  .mat-grid-tile {
+    width: calc((50% - 8px) * 1 + 0px) !important;
     border-radius: 5px;
+    -webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+    -moz-box-shadow:    9px 7px 5px rgba(50, 50, 50, 0.77);
+    box-shadow:         9px 7px 5px rgba(50, 50, 50, 0.77);
+    border: 1px solid rgba(73,155,234,1) !important;
   }
 
   .mat-card{
-    background: lightblue;
-    width: 100%;
+    background: whitesmoke;
+    width: calc((100% - 8px) * 1 + 0px) !important;
     height: 100%;
+  }
+
+  p{
+    font-size:  3vw;
+    margin-top: 5%;
+    margin-bottom: 18%;
+  }
+
+  @media only screen and (max-width: 768px) {
+    p{
+      margin-bottom: 8%;
+    }
+  }
+
+  span{
+    font-size:8vw;
   }

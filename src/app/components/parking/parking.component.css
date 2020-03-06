@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+
+  .mat-card{
+    margin: 10px;
+    background: whitesmoke;
+    border: 1px solid rgba(73,155,234,1) !important;
+  }
+
+  .mat-card-content{
+    display: flex;
+    flex-direction: row;
+    margin: 0 16px;
+  }
+
+  .form{
+    width: 100%;
+  }
+
+  .mat-form-field{
+    width: 100%;
+    margin: 10px;
+  }
+
+  .danger {
+    border: 1px solid currentColor;
+    line-height: 54px;
+    background: #FFF7FA;
+    width: 100%  !important;
+    margin: 10px;
+  }
+
+  .sucess {
+    border: 1px solid green;
+    line-height: 54px;
+    background: #FFF7FA;
+    width: 100%  !important;
+    margin: 10px;
+  }

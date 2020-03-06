@@ -1,6 +1,8 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { EmitterComponentService } from 'src/app/services/emitter/emiter-component.service';
 
 export interface NavItem {
   displayName: string;
@@ -8,6 +10,7 @@ export interface NavItem {
   iconName: string;
   route?: string;
   children?: NavItem[];
+  click?: any;
 }
 
 @Component({
@@ -18,14 +21,23 @@ export interface NavItem {
 
 export class MenuComponent implements OnInit, OnDestroy {
 
+  content;
+
   constructor(
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private router: Router,
+    public _afAuth: AngularFireAuth,
+    private emitterComponentService: EmitterComponentService
   ) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+    this.content = localStorage.getItem('tela') != null ? Number(localStorage.getItem('tela')) : 0;
+
+    this.emitterComponentService.evento.subscribe(data => {
+      this.content = data;
+    });
   }
 
   ngOnInit(): void {
@@ -33,39 +45,26 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   menu: NavItem[] = [
     {
-      displayName: 'Escritorio',
-      iconName: 'desktop_windows',
-      route: 'escritorio',
+      displayName: 'Inicio',
+      iconName: 'home',
+      route: '/home',
+      click: 0
     },
     {
-      displayName: 'Entradas GADE',
-      iconName: 'ballot',
-      route: 'entradasGADE',
-    },
-    {
-      displayName: 'Expedientes',
+      displayName: 'Cadastro',
       iconName: 'description',
       children: [
         {
-          displayName: 'Mis Expedientes',
-          iconName: 'how_to_reg',
-          route: '/misexpedientes'
+          displayName: 'Estacionamento',
+          iconName: 'place',
+          route: 'parking',
+          click: 1
         },
         {
-          displayName: 'Todos',
-          iconName: 'waves',
-          route: '/todos'
-        }
-      ]
-    },
-    {
-      displayName: 'Perfiles',
-      iconName: 'group',
-      children: [
-        {
-          displayName: 'Búsqueda Perfil',
-          iconName: 'search',
-          route: '/busquedaperfiles'
+          displayName: 'Veículos',
+          iconName: 'time_to_leave',
+          route: 'veicles',
+          click: 2
         }
       ]
     }
@@ -79,9 +78,20 @@ export class MenuComponent implements OnInit, OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  clearStorage() {
+  clickTela(content) {
+    this.content = content;
+    localStorage.setItem('tela', content);
+  }
+
+  signOut() {
     localStorage.setItem("token", null);
+    localStorage.setItem('tela', null);
     this.router.navigate(['/login']);
+    this._afAuth.auth.signOut().then(function () {
+      console.log('Signed Out');
+    }, function (error) {
+      console.error('Sign Out Error', error);
+    });
   }
 
 }

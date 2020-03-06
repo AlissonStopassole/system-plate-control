@@ -5,14 +5,14 @@
                 <mat-icon>menu</mat-icon>
             </button>
 
-            <h1 class="app-name">Place Control</h1>
+            <h1 class="app-name">Plate Control</h1>
             <span class="spacer"></span>
 
             <button mat-fab class="profile-button" routerLink="/profile">
                 <mat-icon>perm_identity</mat-icon>
             </button>
 
-            <button mat-fab class="exit-button" (click)="clearStorage()">
+            <button mat-fab class="exit-button" (click)="signOut()">
                 <mat-icon>exit_to_app</mat-icon>
             </button>
         </mat-toolbar-row>
@@ -35,7 +35,7 @@
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
                                 <span *ngFor="let child of item.children">
-                                    <mat-list-item routerLink="[child.route]">
+                                    <mat-list-item routerLink="{{child.route}}" (click)="clickTela(child.click)">
                                         <div fxLayout="row" fxLayoutAlign="space-between center">
                                             <mat-icon>{{child.iconName}}</mat-icon>
                                             {{child.displayName}}
@@ -46,7 +46,7 @@
                         </mat-accordion>
                     </span>
                     <span *ngIf="!item.children || item.children.length === 0">
-                        <mat-list-item routerLink="[item.route]">
+                        <mat-list-item routerLink="{{item.route}}" (click)="clickTela(item.click)">
                             <div fxLayout="row" fxLayoutAlign="space-between center">
                                 <mat-icon>{{item.iconName}}</mat-icon>
                                 {{item.displayName}}
@@ -57,7 +57,9 @@
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>
-            <app-home></app-home>
+            <app-home *ngIf="content === 0"></app-home>
+            <app-parking *ngIf="content === 1"></app-parking>
+            <app-veicles *ngIf="content === 2"></app-veicles>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

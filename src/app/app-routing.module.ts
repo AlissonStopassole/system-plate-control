@@ -7,16 +7,24 @@ import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-
 import { AutenticacaoGuard } from './guards/autenticacao/autenticacao.guard';
 import { ProfileComponent } from './components/profile/profile.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { from } from 'rxjs';
 import { MenuComponent } from './components/menu/menu.component';
+import { ParkingComponent } from './components/parking/parking.component';
+import { VeiclesComponent } from './components/veicles/veicles.component';
 
 const rotas: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'recuperar-senha', component: RecuperarSenhaComponent },
-  { path: 'home', component: MenuComponent, canActivate: [AutenticacaoGuard] },
+  {
+    path: 'home', component: MenuComponent, canActivate: [AutenticacaoGuard],
+    children: [
+      { path: 'parking', component: ParkingComponent, canActivate: [AutenticacaoGuard] },
+      { path: 'veicles', component: VeiclesComponent, canActivate: [AutenticacaoGuard] },
+    ]
+  },
   { path: 'profile', component: ProfileComponent, canActivate: [AutenticacaoGuard] },
+
   { path: '**', component: NotFoundComponent }
 ];
 

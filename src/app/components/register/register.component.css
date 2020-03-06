@@ -20,6 +20,9 @@
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     z-index: 5;
+    -webkit-box-shadow: 9px 7px 5px rgba(50, 50, 50, 0.77);
+    -moz-box-shadow:    9px 7px 5px rgba(50, 50, 50, 0.77);
+    box-shadow:         9px 7px 5px rgba(50, 50, 50, 0.77);
   }
   
   .box.back {
@@ -62,7 +65,6 @@
   }
   
   .login-wrapper .mat-stroked-button {
-    border: 1px solid currentColor;
     line-height: 54px;
     background: #FFF7FA;
   }
@@ -81,7 +83,18 @@
     margin: 5px;
   }
   
-  .danger{
-    background: #1abc9c;
-    color: blue;
+  .next {
+    border: 1px solid currentColor;
+    line-height: 54px;
+    background: #FFF7FA;
+    width: 100%  !important;
+    margin: 10px;
+  }
+  
+  .sucess {
+    border: 1px solid green;
+    line-height: 54px;
+    background: #FFF7FA;
+    width: 100%  !important;
+    margin: 10px;
   }

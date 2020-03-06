@@ -40,6 +40,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppDateAdapter, APP_DATE_FORMATS } from './app-date-adapter';
+import { AngularFireModule } from "angularfire2";
+import { AngularFireAuth } from 'angularfire2/auth';
 
 import { MenuComponent } from './components/menu/menu.component';
 import { HomeComponent } from './components/home/home.component';
@@ -48,9 +50,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { LoginComponent } from './components/login/login.component';
 import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-senha.component';
 import { RegisterComponent } from './components/register/register.component';
+import { ParkingComponent } from './components/parking/parking.component';
+import { VeiclesComponent } from './components/veicles/veicles.component';
 
-import { AngularFireModule } from "angularfire2";
-import { AngularFireAuth } from 'angularfire2/auth';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCzdLeD0GdWoh4zjdOqJLJR7ZwsGtRkeZ0",
@@ -72,7 +74,9 @@ export const firebaseConfig = {
     NotFoundComponent,
     LoginComponent,
     RecuperarSenhaComponent,
-    RegisterComponent
+    RegisterComponent,
+    ParkingComponent,
+    VeiclesComponent
   ],
   imports: [
     BrowserModule,
