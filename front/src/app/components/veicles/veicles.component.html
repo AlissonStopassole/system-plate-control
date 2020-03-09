@@ -1,0 +1,80 @@
+<div class="container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Cadastro de Veículos</mat-card-title>
+            <section class="section">
+                <mat-slide-toggle class="margin" [checked]="veicle.placaNova"
+                    (change)="veicle.placaNova = !veicle.placaNova">
+                    Placa Mercosul
+                </mat-slide-toggle>
+            </section>
+        </mat-card-header>
+        <br>
+        <mat-card-content>
+            <form class="form" name="veicleForm" [formGroup]="veicleForm">
+                <mat-grid-list cols="3" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Modelo" name="modelo" [(ngModel)]="veicle.modelo"
+                                [formControl]="modeloControl" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Cor" name="cor" [(ngModel)]="veicle.cor"
+                                [formControl]="corControl" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field>
+                            <mat-label>Ano</mat-label>
+                            <mat-select name="ano" [formControl]="anoControl" [(ngModel)]="veicle.ano" required>
+                                <mat-option *ngFor="let ano of anos" [value]="ano">
+                                    {{ano}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field>
+                            <mat-label>Estado</mat-label>
+                            <mat-select name="estado" [formControl]="estadoControl" [(ngModel)]="veicle.estado">
+                                <mat-option *ngFor="let estado of estados" [value]="estado._id">
+                                    {{estado.nome}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field>
+                            <mat-label>Cidade</mat-label>
+                            <mat-select name="cidade" [formControl]="cidadeControl" [(ngModel)]="veicle.cidade">
+                                <mat-option *ngFor="let cidade of cidades" [value]="cidade._id">
+                                    {{cidade.nome}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Número da Placa" name="numeroPlaca"
+                                [(ngModel)]="veicle.numeroPlaca" [formControl]="numeroPlacaControl"
+                                mask="{{veicle.placaNova ? 'SSS0S00' : 'SSS-0000'}}" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="2" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <button mat-stroked-button color="accent" class="btn-block danger"
+                            (click)=clearStorage()>Cancelar</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <button mat-stroked-button color="accent" class="btn-block sucess"
+                            [disabled]="veicleForm.invalid" (click)="salvar()">Salvar</button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

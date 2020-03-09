@@ -1,0 +1,34 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>Log in</mat-card-title>
+        </mat-card-header>
+
+        <form class="form" name="userForm" [formGroup]="loginForm">
+            <mat-card-content fxFlex="100">
+                <div fxLayout="column">
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Email" name="email" [(ngModel)]="user.email"
+                            [formControl]="emailControl" required>
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                        <input matInput placeholder="Senha" type="password" name="senha" minlength="6"
+                            [(ngModel)]="user.senha" [formControl]="senhaControl" required>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column">
+                    <button mat-stroked-button color="accent" class="btn-block sucess" [disabled]="loginForm.invalid"
+                        (click)="login()">Entrar</button>
+                </div>
+                <div fxLayout="column">
+                    <button mat-stroked-button color="primary" class="btn-block next"
+                        routerLink="/register">Cadastre-se</button>
+                </div>
+            </mat-card-content>
+
+        </form>
+    </mat-card>
+
+</div>

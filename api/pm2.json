@@ -1,0 +1,15 @@
+{
+    "apps": [
+        {
+            "name": "leigado-api-iot",
+            "script": "src/index.js",
+            "instances": "max",
+            "watch": true,
+            "ignore_watch": [
+                "node_modules",
+                "logs",
+                ".git"
+            ]
+        }
+    ]
+}

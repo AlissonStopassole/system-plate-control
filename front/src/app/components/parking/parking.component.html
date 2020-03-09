@@ -1,0 +1,43 @@
+<div class="container">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Cadastro do Estacionamento</mat-card-title>
+        </mat-card-header>
+        <br>
+        <mat-card-content>
+            <form class="form" name="parkingForm" [formGroup]="parkingForm">
+                <mat-grid-list cols="3" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Nome Estacionamento" name="nome" [(ngModel)]="parking.nome"
+                                [formControl]="nomeControl" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Quantidade de Vagas" type="number" name="qtdVagas"
+                                [(ngModel)]="parking.qtdVagas" [formControl]="qtdVagasControl" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Preço por Vaga" type="text" name="precoVaga"
+                                [(ngModel)]="parking.precoVaga" [formControl]="precoVagaControl" required currencyMask>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="2" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <button mat-stroked-button color="accent" class="btn-block danger"
+                            (click)=clearStorage()>Cancelar</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <button mat-stroked-button color="accent" class="btn-block sucess"
+                            [disabled]="parkingForm.invalid" (click)="salvar()">Salvar</button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

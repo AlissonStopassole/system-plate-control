@@ -1,0 +1,17 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-datepicker-toggle{
+    margin-left: -20px;
+  }
+
+  /* ::ng-deep.mat-focused .mat-form-field-label {
+    color: rgba(73,155,234,1) !important;
+   }
+  
+  ::ng-deep.mat-form-field-ripple {
+   background-color: rgba(73,155,234,1) !important;;
+  } */
+  
