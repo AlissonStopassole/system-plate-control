@@ -34,11 +34,6 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   estados = [];
   mascara = 'SSS-0000';
 
-  pesquisar = true;
-  editando = false;
-  cadastrar = false;
-  disableExcluir = true;
-
   modeloControl = new FormControl('', [Validators.required]);
   anoControl = new FormControl('', [Validators.required]);
   corControl = new FormControl('', [Validators.required]);
@@ -58,7 +53,12 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   config = new MatSnackBarConfig();
   dataSource = new MatTableDataSource([]);
   selection = new SelectionModel(true, []);
-  displayedColumns: string[] = ['modelo', 'cor', 'ano', 'numeroPlaca', 'cidade', 'estado', 'select'];
+  displayedColumns: string[] = ['modelo', 'cor', 'ano', 'numeroPlaca', 'select'];
+
+  pesquisar = true;
+  editando = false;
+  cadastrar = false;
+  disableExcluir = true;
 
   constructor(
     private router: Router,
@@ -134,24 +134,23 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   }
 
   checkboxLabel(row?: any): any {
-    setTimeout(() => {
-      this.disableExcluir = this.selection.selected.length > 0;
+    this.disableExcluir = this.selection.selected.length > 0;
 
-      if (this.selection.selected.length === 1) {
-        this.editando = true;
-      } else {
-        this.editando = false;
-      }
+    if (this.selection.selected.length === 1) {
+      this.editando = true;
+    } else {
+      this.editando = false;
+    }
 
-      if (!row) {
-        return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-      }
-      return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-    }, 10);
+    if (!row) {
+      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
   salvar() {
     this.veicle.numeroPlaca = this.veicle.numeroPlaca.toUpperCase();
+    this.veicle['idUsuario'] = Number(localStorage.getItem('user'));
     this.requisicao.salvar('veiculo', this.veicle).then(response => {
       if (response.message.length) {
 

@@ -85,22 +85,25 @@
             <mat-grid-tile colspan="1" rowspan="1">
                 <mat-form-field class="filter">
                     <mat-label>Pesquisar</mat-label>
-                    <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar">
+                    <input matInput (keyup)="applyFilter($event)" placeholder="Pesquisar"
+                        [disabled]="!dataSource.data.length">
                 </mat-form-field>
             </mat-grid-tile>
             <mat-grid-tile colspan="1" rowspan="1">
-                <button *ngIf="disableExcluir" mat-stroked-button color="accent" class="btn-block danger2"
-                    (click)="excluir()">Excluir</button>
+                <button *ngIf="disableExcluir && dataSource.data.length" mat-stroked-button color="accent"
+                    class="btn-block danger2" (click)="excluir()">Excluir</button>
             </mat-grid-tile>
             <mat-grid-tile colspan="1" rowspan="1">
                 <button *ngIf="!editando" mat-stroked-button color="accent" class="btn-block sucess2"
                     (click)="adicionar()">Adicionar</button>
 
-                <button *ngIf="editando" mat-stroked-button color="accent" class="btn-block sucess2"
-                    (click)="editar()">Editar</button>
+                <button *ngIf="editando &&  dataSource.data.length" mat-stroked-button color="accent"
+                    class="btn-block sucess2" (click)="editar()">Editar</button>
             </mat-grid-tile>
         </mat-grid-list>
-        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" *ngIf="pesquisar">
+
+        <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
+            *ngIf="pesquisar && dataSource.data.length">
             <ng-container matColumnDef="modelo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
                 <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
@@ -119,14 +122,6 @@
                     {{!element.placaNova ? element.numeroPlaca.substring(0,3) + '-' + element.numeroPlaca.substring(3): element.numeroPlaca}}
                 </td>
             </ng-container>
-            <ng-container matColumnDef="cidade">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Cidade </th>
-                <td mat-cell *matCellDef="let element"> {{element.cidade}} </td>
-            </ng-container>
-            <ng-container matColumnDef="estado">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
-                <td mat-cell *matCellDef="let element"> {{element.estado}} </td>
-            </ng-container>
             <ng-container matColumnDef="select">
                 <th mat-header-cell *matHeaderCellDef>
                     <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -143,5 +138,13 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+    </mat-card>
+
+    <mat-card *ngIf="pesquisar && !dataSource.data.length">
+        <mat-card-content>
+            <form class="form">
+                <p class="ng-template" align="center">Não foi possível localizar nenhum registro.</p>
+            </form>
+        </mat-card-content>
     </mat-card>
 </div>

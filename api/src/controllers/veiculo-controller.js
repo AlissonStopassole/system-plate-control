@@ -40,7 +40,7 @@ class VeiculoController {
                     ResponseUtils.sucesso(res, 'Salvo com sucesso');
                 }
             } else {
-                log("Veículo já cadastrado: " + req.body.email);
+                log("Veículo já cadastrado: " + req.body.numeroPlaca);
                 ResponseUtils.falha(res, 'Veículo já cadastrado');
             }
         } catch (error) {

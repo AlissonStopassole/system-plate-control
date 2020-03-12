@@ -73,3 +73,9 @@ th.mat-sort-header-sorted {
 .filter{
   margin: 0px !important;
 }
+
+.ng-template{
+  color: currentColor;
+  font-size: 20px !important;
+  margin-top: 8px;
+}

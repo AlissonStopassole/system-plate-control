@@ -3,6 +3,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Router } from '@angular/router';
+import { RequestService } from 'src/app/services/requisicao/request.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private _snackBar: MatSnackBar,
     public _afAuth: AngularFireAuth,
+    public requisicao: RequestService,
   ) { }
 
   ngOnInit(): void {
@@ -37,8 +39,11 @@ export class LoginComponent implements OnInit {
       this._afAuth.auth.signInWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.senha).then((response) => {
         this._afAuth.auth.currentUser.getIdToken().then((token) => {
           localStorage.setItem('token', token);
-          this.router.navigate(['/home']);
-          resolve();
+          this.requisicao.salvar('usuario/email', { email: this.loginForm.value.email }).then(retorno => {
+            localStorage.setItem('user', retorno.message[0]._id);
+            this.router.navigate(['/home']);
+            resolve();
+          });
         });
       })
         .catch((error) => {

@@ -62,6 +62,16 @@ class UsuarioController {
             ResponseUtils.sucesso(res, false);
         }
     }
+
+    static async getUser(_req, res) {
+        try {
+            log("Get Usuário By Email: ", _req.body.email);
+            let usuario = await UsuarioModel.find({ email: _req.body.email });
+            ResponseUtils.sucesso(res, usuario);
+        } catch (error) {
+            ResponseUtils.erro(res, error);
+        }
+    }
 }
 
 module.exports = UsuarioController;

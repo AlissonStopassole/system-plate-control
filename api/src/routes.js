@@ -14,6 +14,7 @@ const Response = require('./utils/response-utils');
 router.get('/usuario/:id', UsuarioController.getById);
 router.post('/usuario', UsuarioController.salvar);
 router.post('/usuario/auth', UsuarioController.authUser);
+router.post('/usuario/email', UsuarioController.getUser);
 router.get('/usuario', UsuarioController.get);
 
 router.get('/estacionamento/:id', EstacionamentoController.getById);

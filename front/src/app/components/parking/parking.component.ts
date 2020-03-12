@@ -42,6 +42,8 @@ export class ParkingComponent implements OnInit {
   }
 
   salvar() {
+    this.parking['idUsuario'] = Number(localStorage.getItem('user'));
+
     this.requisicao.salvar('estacionamento', this.parking).then((response) => {
       if (!response.message.length) {
         this.config.duration = 5000;

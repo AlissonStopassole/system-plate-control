@@ -85,8 +85,9 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   signOut() {
-    localStorage.removeItem("token");
+    localStorage.removeItem('token');
     localStorage.removeItem('tela');
+    localStorage.removeItem('user');
     this.router.navigate(['/login']);
     this._afAuth.auth.signOut().then(function () {
       console.log('Signed Out');
