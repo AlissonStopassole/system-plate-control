@@ -42,10 +42,14 @@ export class ParkingComponent implements OnInit {
   }
 
   salvar() {
-    console.log(this.parking);
-
-    this.requisicao.salvar('estacionamento', this.parking).then(() => {
-      this._snackBar.open('Salvo com sucesso.', undefined, this.config);
+    this.requisicao.salvar('estacionamento', this.parking).then((response) => {
+      if (!response.message.length) {
+        this.config.duration = 5000;
+        this._snackBar.open(response.message, undefined, this.config);
+      } else {
+        this.config.duration = 5000;
+        this._snackBar.open(response.message, undefined, this.config);
+      }
     });
   }
 

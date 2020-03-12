@@ -26,12 +26,14 @@ class EstacionamentoController {
     static async salvar(req, res) {
         try {
             if (req.body._id) {
-                await EstacionamentoModel.update(req.body);
+                log("Editar Estacionamento: ", req.body._id);
+                await EstacionamentoModel.updateOne(req.body);
+                ResponseUtils.sucesso(res, 'Editado com sucesso');
             } else {
+                log("Cadastro Estacionamento");
                 await EstacionamentoModel.create(req.body);
+                ResponseUtils.sucesso(res, 'Salvo com sucesso');
             }
-            log("Cadastro Estacionamento: " + req.body);
-            ResponseUtils.sucesso(res, 'Salvo com sucesso');
         } catch (error) {
             ResponseUtils.erro(res, error);
         }

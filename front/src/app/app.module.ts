@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -45,7 +46,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 // import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
-import { NgxMaskModule } from 'ngx-mask'
+import { NgMaskModule } from 'ng-mask'
 
 import { AppDateAdapter, APP_DATE_FORMATS } from './app-date-adapter';
 
@@ -103,6 +104,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
     MatAutocompleteModule,
@@ -135,7 +137,7 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     MatPaginatorModule,
     AngularFireModule.initializeApp(firebaseConfig),
     // CurrencyMaskModule,
-    NgxMaskModule.forRoot()
+    NgMaskModule.forRoot()
   ],
   providers: [
     { provide: DateAdapter, useClass: AppDateAdapter },
