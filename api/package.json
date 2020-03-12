@@ -12,6 +12,7 @@
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "firebase-admin": "^8.9.2",
     "md5": "^2.2.1",
     "mocha": "^6.1.4",
     "mongoose": "^5.6.2",

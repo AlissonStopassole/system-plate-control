@@ -33,7 +33,6 @@ export class LoginComponent implements OnInit {
   }
 
   login(): Promise<any> {
-    console.log(this._afAuth);
     return new Promise((resolve, reject) => {
       this._afAuth.auth.signInWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.senha).then((response) => {
         this._afAuth.auth.currentUser.getIdToken().then((token) => {

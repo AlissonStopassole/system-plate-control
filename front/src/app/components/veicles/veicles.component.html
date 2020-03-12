@@ -4,7 +4,7 @@
             <mat-card-title>Cadastro de Veículos</mat-card-title>
             <section class="section" [hidden]="!cadastrar">
                 <mat-slide-toggle class="margin" [checked]="veicle.placaNova" [disabled]="editando"
-                    (change)="veicle.placaNova = !veicle.placaNova">
+                    (change)="getMask(!veicle.placaNova)">
                     Placa Mercosul
                 </mat-slide-toggle>
             </section>
@@ -58,9 +58,10 @@
                     </mat-grid-tile>
                     <mat-grid-tile colspan="1" rowspan="1">
                         <mat-form-field class="full-width">
-                            <input matInput placeholder="Número da Placa" name="numeroPlaca"
-                                [(ngModel)]="veicle.numeroPlaca" [formControl]="numeroPlacaControl"
-                                mask="{{veicle.placaNova ? 'SSS0S00' : 'SSS-0000'}}" required>
+                            <input matInput style="text-transform: uppercase;"
+                                placeholder="Número da Placa: {{mascara}}" name="numeroPlaca"
+                                [formControl]="numeroPlacaControl" mask="{{mascara}}" [(ngModel)]="veicle.numeroPlaca"
+                                required>
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>

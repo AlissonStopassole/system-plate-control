@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmitterComponentService } from 'src/app/services/emitter/emiter-component.service';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
@@ -15,7 +15,7 @@ enableProdMode();
   templateUrl: './veicles.component.html',
   styleUrls: ['./veicles.component.css']
 })
-export class VeiclesComponent implements OnInit {
+export class VeiclesComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -32,6 +32,7 @@ export class VeiclesComponent implements OnInit {
   anos = [];
   cidades = [];
   estados = [];
+  mascara = 'SSS-0000';
 
   pesquisar = true;
   editando = false;
@@ -71,6 +72,10 @@ export class VeiclesComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.selection = new SelectionModel(true, []);
+    this.dataSource = new MatTableDataSource([]);
+  }
 
   ngOnInit(): void {
     this.buscarEstados();
@@ -226,6 +231,16 @@ export class VeiclesComponent implements OnInit {
         this.veicle.cidade = this.cidades[0]._id;
       }
     });
+  }
+
+  getMask(value) {
+    this.mascara = '';
+    if (value) {
+      this.mascara = 'SSS0S00';
+    } else {
+      this.mascara = 'SSS-0000';
+    }
+    this.veicle.placaNova = value;
   }
 
   clearStorage() {

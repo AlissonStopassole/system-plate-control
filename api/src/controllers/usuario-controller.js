@@ -1,6 +1,13 @@
 
 const UsuarioModel = require('../models/usuario-model');
 const ResponseUtils = require('../utils/response-utils');
+const Admin = require('firebase-admin');
+const serviceAccount = require("../../platecontrol-ee1d8-firebase-adminsdk-ms49z-afe18263cb.json");
+
+Admin.initializeApp({
+    credential: Admin.credential.cert(serviceAccount),
+    databaseURL: "https://platecontrol-ee1d8.firebaseio.com"
+});
 
 class UsuarioController {
     static async get(_req, res) {
@@ -36,6 +43,23 @@ class UsuarioController {
             }
         } catch (error) {
             ResponseUtils.erro(res, error);
+        }
+    }
+
+    static async authUser(req, res) {
+        try {
+            Admin.auth().verifyIdToken(req.body.token)
+                .then(function (decodedToken) {
+                    if (new Date(decodedToken.exp * 1000) < new Date()) {
+                        ResponseUtils.sucesso(res, false);
+                    } else {
+                        ResponseUtils.sucesso(res, true);
+                    }
+                }).catch(function (error) {
+                    ResponseUtils.sucesso(res, false);
+                });
+        } catch (error) {
+            ResponseUtils.sucesso(res, false);
         }
     }
 }

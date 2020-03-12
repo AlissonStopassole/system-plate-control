@@ -44,9 +44,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AngularFireModule } from "angularfire2";
 import { AngularFireAuth } from 'angularfire2/auth';
 
-// import { CurrencyMaskModule } from 'ng2-currency-mask';
-import { CurrencyMaskConfig, CURRENCY_MASK_CONFIG } from "ng2-currency-mask/src/currency-mask.config";
-import { NgMaskModule } from 'ng-mask'
+import { NgxCurrencyModule } from "ngx-currency";
+import { NgxMaskModule } from 'ngx-mask';
 
 import { AppDateAdapter, APP_DATE_FORMATS } from './app-date-adapter';
 
@@ -71,14 +70,16 @@ export const firebaseConfig = {
   measurementId: "G-05MVGZMC1G"
 };
 
-export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+export const customCurrencyMaskConfig = {
   align: "left",
   allowNegative: true,
+  allowZero: true,
   decimal: ",",
   precision: 2,
   prefix: "",
   suffix: "",
-  thousands: "."
+  thousands: ".",
+  nullable: true,
 };
 
 @NgModule({
@@ -136,15 +137,14 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     MatSortModule,
     MatPaginatorModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    // CurrencyMaskModule,
-    NgMaskModule.forRoot()
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    NgxMaskModule.forRoot()
   ],
   providers: [
     { provide: DateAdapter, useClass: AppDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS },
     { provide: AngularFireModule },
     { provide: AngularFireAuth },
-    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig }
   ],
   bootstrap: [AppComponent]
 })
