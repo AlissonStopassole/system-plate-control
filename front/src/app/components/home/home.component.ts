@@ -3,6 +3,7 @@ import { RequestService } from 'src/app/services/requisicao/request.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -31,18 +32,6 @@ export class HomeComponent implements OnInit {
           this.vagasOcupadas = response.message[0].qtdVagas;
         }
       });
-    });
-    this.openDialog();
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '600px',
-      height: '500px',
-      data: {}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
     });
   }
 }
