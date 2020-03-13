@@ -43,12 +43,12 @@ export class ParkingComponent implements OnInit {
 
   salvar() {
     this.parking['idUsuario'] = Number(localStorage.getItem('user'));
-
     this.requisicao.salvar('estacionamento', this.parking).then((response) => {
       if (!response.message.length) {
         this.config.duration = 5000;
         this._snackBar.open(response.message, undefined, this.config);
       } else {
+        this.buscar();
         this.config.duration = 5000;
         this._snackBar.open(response.message, undefined, this.config);
       }
@@ -56,7 +56,7 @@ export class ParkingComponent implements OnInit {
   }
 
   buscar() {
-    this.requisicao.buscar('estacionamento').then(response => {
+    this.requisicao.buscar(`estacionamento-usuario/${Number(localStorage.getItem('user'))}`).then(response => {
       if (response.message.length) {
         this.parking = response.message[0];
       }

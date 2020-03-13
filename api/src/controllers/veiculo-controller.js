@@ -1,14 +1,12 @@
 
 const VeiculoModel = require('../models/veiculo-model');
-const CidadeController = require('../controllers/cidade-controller');
-const EstadoController = require('../controllers/estado-controller');
 const ResponseUtils = require('../utils/response-utils');
 
 class VeiculoController {
-    static async get(_req, res) {
+    static async getByIdUsuario(_req, res) {
         try {
-            log("Get All Veiculos");
-            var veiculos = await VeiculoModel.find();
+            log("Get Veiculos By Usuario");
+            var veiculos = await VeiculoModel.find({ idUsuario: Number(_req.params.id) });
             ResponseUtils.sucesso(res, veiculos);
         } catch (error) {
             ResponseUtils.erro(res, error);

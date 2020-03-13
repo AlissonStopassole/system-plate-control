@@ -2,6 +2,7 @@
 const Model = require('./model');
 
 module.exports = Model.preparaSchema('veiculo', {
+    idUsuario: { type: Number, required: true },
     modelo: { type: String, required: true },
     ano: { type: Number, required: true },
     cor: { type: String, required: true },

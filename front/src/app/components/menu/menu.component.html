@@ -1,14 +1,15 @@
 <div class="container" [class.is-mobile]="mobileQuery.matches">
     <mat-toolbar color="primary">
         <mat-toolbar-row>
-            <button mat-fab class="toolbar-button" (click)="snav.toggle()">
-                <mat-icon>menu</mat-icon>
+            <button mat-fab class="toolbar-button" (click)="[snav.toggle(), toggleAnimate()]">
+                <mat-animated-icon start="menu" end="close" colorStart="none" colorEnd="none" [animate]="animate">
+                </mat-animated-icon>
             </button>
 
             <h1 class="app-name">Plate Control</h1>
             <span class="spacer"></span>
 
-            <button mat-fab class="profile-button" routerLink="/profile">
+            <button mat-fab class="profile-button" routerLink="/home/profile" (click)="clickTela(3)">
                 <mat-icon>perm_identity</mat-icon>
             </button>
 
@@ -60,6 +61,7 @@
             <app-home *ngIf="content === 0"></app-home>
             <app-parking *ngIf="content === 1"></app-parking>
             <app-veicles *ngIf="content === 2"></app-veicles>
+            <app-profile *ngIf="content === 3"></app-profile>
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>

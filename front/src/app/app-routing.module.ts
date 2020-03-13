@@ -19,12 +19,11 @@ const rotas: Routes = [
   {
     path: 'home', component: MenuComponent, canActivate: [AutenticacaoGuard],
     children: [
+      { path: 'profile', component: ProfileComponent, canActivate: [AutenticacaoGuard] },
       { path: 'parking', component: ParkingComponent, canActivate: [AutenticacaoGuard] },
       { path: 'veicles', component: VeiclesComponent, canActivate: [AutenticacaoGuard] },
     ]
   },
-  { path: 'profile', component: ProfileComponent, canActivate: [AutenticacaoGuard] },
-
   { path: '**', component: NotFoundComponent }
 ];
 

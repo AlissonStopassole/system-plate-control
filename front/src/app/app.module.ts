@@ -58,6 +58,10 @@ import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-
 import { RegisterComponent } from './components/register/register.component';
 import { ParkingComponent } from './components/parking/parking.component';
 import { VeiclesComponent } from './components/veicles/veicles.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MatAnimatedIconComponent } from './components/mat-animated-icon/mat-animated-icon.component';
+
+import { VarDirective } from './directives/var.directive';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyCzdLeD0GdWoh4zjdOqJLJR7ZwsGtRkeZ0",
@@ -93,7 +97,10 @@ export const customCurrencyMaskConfig = {
     RecuperarSenhaComponent,
     RegisterComponent,
     ParkingComponent,
-    VeiclesComponent
+    VeiclesComponent,
+    DialogComponent,
+    MatAnimatedIconComponent,
+    VarDirective
   ],
   imports: [
     BrowserModule,

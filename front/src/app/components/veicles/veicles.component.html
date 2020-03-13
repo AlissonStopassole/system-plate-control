@@ -72,11 +72,9 @@
                             (click)=cancelar()>Cancelar</button>
                     </mat-grid-tile>
                     <mat-grid-tile colspan="1" rowspan="1">
-                        <button *ngIf="!editando" mat-stroked-button color="accent" class="btn-block sucess"
-                            [disabled]="veicleForm.invalid" (click)="salvar()">Salvar</button>
-
-                        <button *ngIf="editando" mat-stroked-button color="accent" class="btn-block sucess"
-                            [disabled]="veicleForm.invalid" (click)="salvar()">Editar</button>
+                        <button mat-stroked-button color="accent" class="btn-block sucess"
+                            [disabled]="veicleForm.invalid"
+                            (click)="salvar()">{{!editando ? 'Salvar' : 'Editar'}}</button>
                     </mat-grid-tile>
                 </mat-grid-list>
             </form>

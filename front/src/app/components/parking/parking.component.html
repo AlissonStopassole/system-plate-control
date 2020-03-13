@@ -34,7 +34,8 @@
                     </mat-grid-tile>
                     <mat-grid-tile colspan="1" rowspan="1">
                         <button mat-stroked-button color="accent" class="btn-block sucess"
-                            [disabled]="parkingForm.invalid" (click)="salvar()">Salvar</button>
+                            [disabled]="parkingForm.invalid"
+                            (click)="salvar()">{{parking['_id'] ? 'Editar' : 'Salvar'}}</button>
                     </mat-grid-tile>
                 </mat-grid-list>
             </form>

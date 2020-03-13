@@ -22,6 +22,7 @@ export interface NavItem {
 export class MenuComponent implements OnInit, OnDestroy {
 
   content;
+  animate = false;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
@@ -70,6 +71,10 @@ export class MenuComponent implements OnInit, OnDestroy {
       ]
     }
   ];
+
+  toggleAnimate() {
+    this.animate = !this.animate;
+  }
 
   mobileQuery: MediaQueryList;
 

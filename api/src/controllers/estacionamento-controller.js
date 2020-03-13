@@ -1,12 +1,13 @@
 
 const EstacionamentoModel = require('../models/estacionamento-model');
 const ResponseUtils = require('../utils/response-utils');
+const VagasOcupadasController = require('../controllers/vagas-ocupadas-controller');
 
 class EstacionamentoController {
-    static async get(_req, res) {
+    static async getByIdUsuario(_req, res) {
         try {
-            log("Get All Estacionamentos");
-            let estacionamento = await EstacionamentoModel.find();
+            log("Get Estacionamentos By Usuario");
+            let estacionamento = await EstacionamentoModel.find({ idUsuario: Number(_req.params.id) });
             ResponseUtils.sucesso(res, estacionamento);
         } catch (error) {
             ResponseUtils.erro(res, error);
@@ -31,8 +32,13 @@ class EstacionamentoController {
                 ResponseUtils.sucesso(res, 'Editado com sucesso');
             } else {
                 log("Cadastro Estacionamento");
-                await EstacionamentoModel.create(req.body);
-                ResponseUtils.sucesso(res, 'Salvo com sucesso');
+                var retorno = await EstacionamentoModel.create(req.body);
+                var retorno2 = await VagasOcupadasController.salvar({ idEstacionamento: retorno._id });
+                if (retorno2 !== true) {
+                    ResponseUtils.erro(res, retorno2);
+                } else {
+                    ResponseUtils.sucesso(res, 'Salvo com sucesso');
+                }
             }
         } catch (error) {
             ResponseUtils.erro(res, error);
