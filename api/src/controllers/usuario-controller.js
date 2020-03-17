@@ -38,9 +38,17 @@ class UsuarioController {
                 log("Cadastro Usuário: " + req.body.email);
                 ResponseUtils.sucesso(res, 'Salvo com sucesso');
             } else {
-                log("E-mail já cadastrado: " + req.body.email);
-                ResponseUtils.falha(res, 'E-mail já cadastrado');
+                if (!req.body._id) {
+                    log("E-mail já cadastrado: " + req.body.email);
+                    ResponseUtils.falha(res, 'E-mail já cadastrado');
+                } else {
+                    var query = { _id: req.body._id };
+                    await UsuarioModel.update(query, req.body);
+                    log("Editar Usuario: " + req.body._id);
+                    ResponseUtils.sucesso(res, 'Editado com sucesso');
+                }
             }
+
         } catch (error) {
             ResponseUtils.erro(res, error);
         }

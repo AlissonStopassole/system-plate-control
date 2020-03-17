@@ -41,6 +41,9 @@ export class LoginComponent implements OnInit {
           localStorage.setItem('token', token);
           this.requisicao.salvar('usuario/email', { email: this.loginForm.value.email }).then(retorno => {
             localStorage.setItem('user', retorno.message[0]._id);
+            var jsonAux = JSON.stringify(retorno.message[0]);
+            localStorage.setItem('user2', jsonAux);
+
             this.router.navigate(['/home']);
             resolve();
           });

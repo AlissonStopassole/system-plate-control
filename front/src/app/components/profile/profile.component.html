@@ -5,7 +5,65 @@
         </mat-card-header>
         <br>
         <mat-card-content>
+            <form class="form" name="userForm" [formGroup]="userForm">
+                <mat-grid-list cols="3" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Nome" name="nome" [(ngModel)]="user.nome"
+                                [formControl]="nomeControl" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Sobrenome" name="sobrenome" [(ngModel)]="user.sobrenome"
+                                [formControl]="sobrenomeControl" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="E-mail" type="email" name="email" [(ngModel)]="user.email"
+                                [formControl]="emailControl" [disabled]="true" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
 
+                <mat-grid-list cols="3" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput placeholder="Cpf" name="cpf" [(ngModel)]="user.cpf"
+                                [formControl]="cpfControl" mask="000.000.000-00" required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field>
+                            <input matInput placeholder="Data Nascimento" [matDatepicker]="datepickerRef"
+                                name="dtNascimento" [formControl]="dtNascimentoControl" [(ngModel)]="user.dtNascimento"
+                                required readonly />
+                            <mat-datepicker-toggle [for]="datepickerRef" matSuffix></mat-datepicker-toggle>
+                            <mat-datepicker #datepickerRef></mat-datepicker>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <mat-form-field class="full-width">
+                            <input matInput type="text" placeholder="Telefone" name="telefone"
+                                [(ngModel)]="user.telefone" [formControl]="telefoneControl"
+                                mask="{{user.telefone ? user.telefone.length <= 10?'(00) 0000-00000':'(00) 00000-0000' :''}}"
+                                required>
+                        </mat-form-field>
+                    </mat-grid-tile>
+                </mat-grid-list>
+
+                <mat-grid-list cols="2" rowHeight="100px">
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <button mat-stroked-button color="accent" class="btn-block danger"
+                            (click)=clearStorage()>Cancelar</button>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1">
+                        <button mat-stroked-button color="accent" class="btn-block sucess" [disabled]="userForm.invalid"
+                            (click)="salvar()">{{user['_id'] ? 'Editar' : 'Salvar'}}</button>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </form>
         </mat-card-content>
     </mat-card>
 </div>

@@ -8,6 +8,8 @@ var server = http.Server(app);
 var mongoose = require('mongoose');
 var io = require('socket.io');
 
+var socket = require('./controllers/socket-controller');
+
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/plate-control', {
     useNewUrlParser: true,
     useFindAndModify: false,
@@ -21,13 +23,4 @@ server.listen(3000, function () {
 });
 
 io = io.listen(server);
-
-io.on('connection', function (socket) {
-    log("Socket ON");
-
-    socket.emit('new-message', "1");
-
-    socket.on('disconnect', function () {
-        log('Socket OFF');
-    });
-});
+socket.connect(io);

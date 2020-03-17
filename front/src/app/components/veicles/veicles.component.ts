@@ -224,12 +224,14 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   }
 
   buscarCidades() {
-    this.requisicao.buscar(`cidade/${this.veicle.estado}`).then(response => {
-      if (response.message.length) {
-        this.cidades = response.message;
-        this.veicle.cidade = this.cidades[0]._id;
-      }
-    });
+    if (this.veicle.estado) {
+      this.requisicao.buscar(`cidade/${this.veicle.estado}`).then(response => {
+        if (response.message.length) {
+          this.cidades = response.message;
+          this.veicle.cidade = this.cidades[0]._id;
+        }
+      });
+    }
   }
 
   getMask(value) {
