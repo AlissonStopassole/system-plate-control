@@ -7,7 +7,7 @@ class EstadoController {
         try {
             log("Get All Estados");
             let estados = await EstadoModel.find();
-            ResponseUtils.sucesso(res, estados);
+            ResponseUtils.sucesso(res, 0, estados);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -16,7 +16,7 @@ class EstadoController {
     static async getById(_req, res) {
         try {
             let estado = await this.findById(Number(_req.params.id));
-            ResponseUtils.sucesso(res, estado);
+            ResponseUtils.sucesso(res, 0, estado);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }

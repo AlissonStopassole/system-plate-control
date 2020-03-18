@@ -14,7 +14,7 @@ class UsuarioController {
         try {
             log("Get All Usuários");
             let usuarios = await UsuarioModel.find();
-            ResponseUtils.sucesso(res, usuarios);
+            ResponseUtils.sucesso(res, 0, usuarios);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -24,7 +24,7 @@ class UsuarioController {
         try {
             log("Get Usuário by id: " + _req.params.id);
             let usuario = await UsuarioModel.findById(Number(_req.params.id));
-            ResponseUtils.sucesso(res, usuario);
+            ResponseUtils.sucesso(res, 0, usuario);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -36,16 +36,16 @@ class UsuarioController {
             if (!usuario) {
                 await UsuarioModel.create(req.body);
                 log("Cadastro Usuário: " + req.body.email);
-                ResponseUtils.sucesso(res, 'Salvo com sucesso');
+                ResponseUtils.sucesso(res, 0, 'Salvo com sucesso');
             } else {
                 if (!req.body._id) {
                     log("E-mail já cadastrado: " + req.body.email);
-                    ResponseUtils.falha(res, 'E-mail já cadastrado');
+                    ResponseUtils.erro(res, 'E-mail já cadastrado');
                 } else {
                     var query = { _id: req.body._id };
                     await UsuarioModel.update(query, req.body);
                     log("Editar Usuario: " + req.body._id);
-                    ResponseUtils.sucesso(res, 'Editado com sucesso');
+                    ResponseUtils.sucesso(res, 0, 'Editado com sucesso');
                 }
             }
 
@@ -59,15 +59,15 @@ class UsuarioController {
             Admin.auth().verifyIdToken(req.body.token)
                 .then(function (decodedToken) {
                     if (new Date(decodedToken.exp * 1000) < new Date()) {
-                        ResponseUtils.sucesso(res, false);
+                        ResponseUtils.sucesso(res, 0, false);
                     } else {
-                        ResponseUtils.sucesso(res, true);
+                        ResponseUtils.sucesso(res, 0, true);
                     }
                 }).catch(function (error) {
-                    ResponseUtils.sucesso(res, false);
+                    ResponseUtils.sucesso(res, 0, false);
                 });
         } catch (error) {
-            ResponseUtils.sucesso(res, false);
+            ResponseUtils.sucesso(res, 0, false);
         }
     }
 
@@ -75,7 +75,7 @@ class UsuarioController {
         try {
             log("Get Usuário By Email: ", _req.body.email);
             let usuario = await UsuarioModel.find({ email: _req.body.email });
-            ResponseUtils.sucesso(res, usuario);
+            ResponseUtils.sucesso(res, 0, usuario);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }

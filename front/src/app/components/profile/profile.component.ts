@@ -66,7 +66,7 @@ export class ProfileComponent implements OnInit {
     var er = /[^a-z0-9]/gi;
     this.user.telefone = this.userForm.value.telefone.replace(er, "");
     this.requisicao.salvar('usuario', this.user).then((response: any) => {
-      if (response.message.length) {
+      if (response.status === 0) {
         var jsonAux = JSON.stringify(this.user);
         localStorage.setItem('user2', jsonAux);
         this.config.duration = 5000;
@@ -76,6 +76,9 @@ export class ProfileComponent implements OnInit {
         this.user = JSON.parse(jsonUser);
         var date = new Date(this.user.dtNascimento);
         this.user.dtNascimento = new Date(date);
+      } else {
+        this.config.duration = 5000;
+        this._snackBar.open('Falha ao salvar.', undefined, this.config);
       }
     });
   }

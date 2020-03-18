@@ -1,14 +1,10 @@
 module.exports = class ResponseUtils {
 
     static erro(res, message) {
-        res.status(500).send({ message: message });
+        res.status(200).send({ status: -1, message: message });
     }
 
-    static falha(res, message) {
-        res.status(400).send({ message: message });
-    }
-
-    static sucesso(res, message) {
-        res.status(200).send({ message: message });
+    static sucesso(res, status, message) {
+        res.status(200).send({ status: status, message: message });
     };
 }

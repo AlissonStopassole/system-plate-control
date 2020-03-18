@@ -8,7 +8,7 @@ class EstacionamentoController {
         try {
             log("Get Estacionamentos By Usuario");
             let estacionamento = await EstacionamentoModel.find({ idUsuario: Number(_req.params.id) });
-            ResponseUtils.sucesso(res, estacionamento);
+            ResponseUtils.sucesso(res, 0, estacionamento);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -18,7 +18,7 @@ class EstacionamentoController {
         try {
             log("Get Estacionamento by id: " + _req.params.id);
             let estacionamento = await EstacionamentoModel.findById(Number(_req.params.id));
-            ResponseUtils.sucesso(res, estacionamento);
+            ResponseUtils.sucesso(res, 0, estacionamento);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -29,7 +29,7 @@ class EstacionamentoController {
             if (req.body._id) {
                 log("Editar Estacionamento: ", req.body._id);
                 await EstacionamentoModel.updateOne(req.body);
-                ResponseUtils.sucesso(res, 'Editado com sucesso');
+                ResponseUtils.sucesso(res, 0, 'Editado com sucesso');
             } else {
                 log("Cadastro Estacionamento");
                 var retorno = await EstacionamentoModel.create(req.body);
@@ -37,7 +37,7 @@ class EstacionamentoController {
                 if (retorno2 !== true) {
                     ResponseUtils.erro(res, retorno2);
                 } else {
-                    ResponseUtils.sucesso(res, 'Salvo com sucesso');
+                    ResponseUtils.sucesso(res, 0, 'Salvo com sucesso');
                 }
             }
         } catch (error) {

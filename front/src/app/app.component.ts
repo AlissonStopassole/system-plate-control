@@ -3,6 +3,7 @@ import * as io from 'socket.io-client';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { AutenticacaoGuard } from './guards/autenticacao/autenticacao.guard';
+import { LoaderService } from './services/loader/loader-service';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +13,15 @@ import { AutenticacaoGuard } from './guards/autenticacao/autenticacao.guard';
 export class AppComponent {
   private url = 'http://localhost:3000';
   private socket;
+  public carregando: any;
 
   constructor(
     private dialog: MatDialog,
-    private autentication: AutenticacaoGuard
-
+    private autentication: AutenticacaoGuard,
+    private loaderService: LoaderService,
   ) {
+    this.loaderService.issue.subscribe(resposta => this.carregando = resposta);
+
     this.socket = io(this.url)
     this.socket.on('new-message', message => {
       autentication.canActivate().then(response => {

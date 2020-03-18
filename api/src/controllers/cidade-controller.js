@@ -7,7 +7,7 @@ class CidadeController {
         try {
             log("Get All Cidade");
             let cidades = await CidadeModel.find();
-            ResponseUtils.sucesso(res, cidades);
+            ResponseUtils.sucesso(res, 0, cidades);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -17,7 +17,7 @@ class CidadeController {
         try {
             log("Get Cidade by idEstado: " + _req.params.id);
             let cidade = await CidadeModel.find({ idEstado: Number(_req.params.id) });
-            ResponseUtils.sucesso(res, cidade);
+            ResponseUtils.sucesso(res, 0, cidade);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }

@@ -11,7 +11,6 @@ let snl = SimpleNodeLoger.createRollingFileLogger(opts);
 
 global.log = (...info) => {
     info.forEach(i => {
-        console.log(i)
         snl.info(i);
     });
 };

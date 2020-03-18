@@ -7,7 +7,7 @@ class VeiculoController {
         try {
             log("Get Veiculos By Usuario");
             var veiculos = await VeiculoModel.find({ idUsuario: Number(_req.params.id) });
-            ResponseUtils.sucesso(res, veiculos);
+            ResponseUtils.sucesso(res, 0, veiculos);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -17,7 +17,7 @@ class VeiculoController {
         try {
             log("Get Veiculo by id: " + _req.params.id);
             let veiculo = await VeiculoModel.findById(Number(_req.params.id));
-            ResponseUtils.sucesso(res, veiculo);
+            ResponseUtils.sucesso(res, 0, veiculo);
         } catch (error) {
             ResponseUtils.erro(res, error);
         }
@@ -31,15 +31,15 @@ class VeiculoController {
                     var query = { _id: req.body._id };
                     await VeiculoModel.update(query, req.body);
                     log("Editar Veiculo: " + req.body._id);
-                    ResponseUtils.sucesso(res, 'Editado com sucesso');
+                    ResponseUtils.sucesso(res, 0, 'Editado com sucesso');
                 } else {
                     await VeiculoModel.create(req.body);
                     log("Cadastro Veiculo: " + req.body.numeroPlaca);
-                    ResponseUtils.sucesso(res, 'Salvo com sucesso');
+                    ResponseUtils.sucesso(res, 0, 'Salvo com sucesso');
                 }
             } else {
                 log("Veículo já cadastrado: " + req.body.numeroPlaca);
-                ResponseUtils.falha(res, 'Veículo já cadastrado');
+                ResponseUtils.erro(res, 'Veículo já cadastrado');
             }
         } catch (error) {
             ResponseUtils.erro(res, error);
@@ -50,7 +50,7 @@ class VeiculoController {
         try {
             await VeiculoModel.deleteOne(req.body);
             log("Excluir Veículo: " + req.body.numeroPlaca);
-            ResponseUtils.sucesso(res, 'Deletado com sucesso');
+            ResponseUtils.sucesso(res, 0, 'Deletado com sucesso');
         } catch (error) {
             ResponseUtils.erro(res, error);
         }

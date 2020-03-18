@@ -79,13 +79,13 @@ export class RegisterComponent implements OnInit {
 
       })
         .catch((error) => {
-          // Valiar erros firebase
-          console.log(error);
+          this.config.duration = 5000;
+          this._snackBar.open(error, undefined, this.config);
         });
     })
       .catch((error) => {
-        // Valiar erros firebase
-        console.log(error);
+        this.config.duration = 5000;
+        this._snackBar.open(error, undefined, this.config);
       });
   }
 

@@ -8,10 +8,8 @@ class VagasOcupadasController {
             log("Get Vagas By Estacionamento");
             let vagas = await VagasOcupadasController.findByIdEstacionamento(Number(_req.params.id));
 
-            ResponseUtils.sucesso(res, vagas);
+            ResponseUtils.sucesso(res, 0, vagas);
         } catch (error) {
-            console.log(error);
-
             ResponseUtils.erro(res, error);
         }
     }

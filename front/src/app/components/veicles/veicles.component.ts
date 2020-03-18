@@ -109,9 +109,12 @@ export class VeiclesComponent implements OnInit, OnDestroy {
 
   buscarVeiculos() {
     this.requisicao.buscar(`veiculo-usuario/${Number(localStorage.getItem('user'))}`).then(response => {
-      if (response.message.length) {
+      if (response.status === 0) {
         this.dataSource = new MatTableDataSource(response.message);
         this.dataSource.sort = this.sort;
+      } else {
+        this.config.duration = 5000;
+        this._snackBar.open('Falha ao buscar.', undefined, this.config);
       }
     });
   }
@@ -152,8 +155,7 @@ export class VeiclesComponent implements OnInit, OnDestroy {
     this.veicle.numeroPlaca = this.veicle.numeroPlaca.toUpperCase();
     this.veicle['idUsuario'] = Number(localStorage.getItem('user'));
     this.requisicao.salvar('veiculo', this.veicle).then(response => {
-      if (response.message.length) {
-
+      if (response.status === 0) {
         if (this.veicle['_id']) {
           this.selection = new SelectionModel(true, []);
           this.pesquisar = true;
@@ -177,8 +179,7 @@ export class VeiclesComponent implements OnInit, OnDestroy {
         this.buscarEstados();
         this.config.duration = 5000;
         this._snackBar.open(response.message, undefined, this.config);
-      }
-      else {
+      } else {
         this.config.duration = 5000;
         this._snackBar.open(response.message, undefined, this.config);
       }
@@ -188,17 +189,17 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   excluir() {
     this.selection.selected.forEach(veicle => {
       this.requisicao.salvar('veiculo/delete', veicle).then(response => {
-        if (!response.message.length) {
+        if (response.status !== 0) {
           this.config.duration = 5000;
           this._snackBar.open(response.message, undefined, this.config);
+        } else {
+          this.selection = new SelectionModel(true, []);
+          this.dataSource = new MatTableDataSource([]);
+          this.buscarVeiculos();
+          this.config.duration = 5000;
+          this._snackBar.open('Deletado com sucesso.', undefined, this.config);
         }
-      }).then(() => {
-        this.selection = new SelectionModel(true, []);
-        this.dataSource = new MatTableDataSource([]);
-        this.buscarVeiculos();
-        this.config.duration = 5000;
-        this._snackBar.open('Deletado com sucesso.', undefined, this.config);
-      })
+      });
     });
   }
 
@@ -214,9 +215,12 @@ export class VeiclesComponent implements OnInit, OnDestroy {
 
   buscarEstados() {
     this.requisicao.buscar('estado').then(response => {
-      if (response.message.length) {
+      if (response.status === 0) {
         this.estados = response.message;
         this.veicle.estado = this.estados[0]._id;
+      } else {
+        this.config.duration = 5000;
+        this._snackBar.open('Falha ao buscar.', undefined, this.config);
       }
     }).then(() => {
       this.buscarCidades();
@@ -226,9 +230,12 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   buscarCidades() {
     if (this.veicle.estado) {
       this.requisicao.buscar(`cidade/${this.veicle.estado}`).then(response => {
-        if (response.message.length) {
+        if (response.status === 0) {
           this.cidades = response.message;
           this.veicle.cidade = this.cidades[0]._id;
+        } else {
+          this.config.duration = 5000;
+          this._snackBar.open('Falha ao buscar.', undefined, this.config);
         }
       });
     }
