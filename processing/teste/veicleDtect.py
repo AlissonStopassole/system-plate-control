@@ -40,7 +40,9 @@ while True:
 
     contorno, h = cv2.findContours(
         dilatada, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
     cv2.line(frame1, (25, pos_linha), (1200, pos_linha), (255, 127, 0), 3)
+
     for(i, c) in enumerate(contorno):
         (x, y, w, h) = cv2.boundingRect(c)
         validar_contorno = (w >= largura_min) and (h >= altura_min)
@@ -59,11 +61,12 @@ while True:
                          (1200, pos_linha), (0, 127, 255), 3)
                 detec.remove((x, y))
                 print("Carros detectados até o momento: "+str(carros))
+                cv2.imwrite("ImageCarroDetectado.png", frame1)
+                cv2.imshow("Carro", frame1)
 
-    cv2.putText(frame1, "VEICULOS: "+str(carros), (450, 70),
-                cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 5)
+    # cv2.putText(frame1, "VEICULOS: "+str(carros), (450, 70),
+    #             cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 5)
     cv2.imshow("Video Original", frame1)
-    cv2.imshow("Detectar", dilatada)
 
     if cv2.waitKey(1) == 27:
         break
