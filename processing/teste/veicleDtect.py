@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 from time import sleep
 
-largura_min = 80  # Largura minima do retangulo
-altura_min = 80  # Altura minima do retangulo
+largura_min = 160  # Largura minima do retangulo
+altura_min = 160  # Altura minima do retangulo
 
 offset = 6  # Erro permitido entre pixel
 
@@ -23,7 +23,7 @@ def pega_centro(x, y, w, h):
     return cx, cy
 
 
-cap = cv2.VideoCapture('video.mp4')
+cap = cv2.VideoCapture('video1.mp4')
 subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
 
 while True:
