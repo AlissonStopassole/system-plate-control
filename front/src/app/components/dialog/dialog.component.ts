@@ -9,10 +9,16 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class DialogComponent implements OnInit {
 
   animate = false;
+  permissao = false;
+  text = '';
 
   constructor(
     public dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) { }
+    @Inject(MAT_DIALOG_DATA) public data: any) {
+    if (data.message === '1') this.permissao = true;
+    else
+      this.text = "Veiculo " + data.message + " sem permissão"
+  }
 
   ngOnInit(): void {
     setTimeout(() => {

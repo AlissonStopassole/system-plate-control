@@ -1,7 +1,7 @@
 <div class="container">
     <mat-grid-list cols="2" rowHeight="2:1">
         <mat-grid-tile>
-            <mat-card>
+            <mat-card style="cursor: pointer;" (click)="navigate(1)">
                 <mat-card-title fxLayoutAlign="center">
                     <p>Total de vagas</p>
                 </mat-card-title>
@@ -11,7 +11,7 @@
             </mat-card>
         </mat-grid-tile>
         <mat-grid-tile>
-            <mat-card>
+            <mat-card style="cursor: pointer;" (click)="navigate(2)">
                 <mat-card-title fxLayoutAlign="center">
                     <p>Vagas Ocupadas</p>
                 </mat-card-title>

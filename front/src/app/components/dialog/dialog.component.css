@@ -1,5 +1,11 @@
-.icon {
+.icon1 {
     transform: scale(10);
     margin-top: 40%;
     color: green;
+}
+
+.icon2 {
+    transform: scale(10);
+    margin-top: 40%;
+    color: red;
 }

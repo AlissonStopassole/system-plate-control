@@ -1,9 +1,13 @@
 <div fxLayoutAlign="center">
-    Veiculo com Permissão
+    <h2> {{permissao ? 'Veiculo com permissão' : text}}</h2>
 </div>
 <div fxLayoutAlign="center">
-    <div class="icon">
+    <div class="icon1" *ngIf="permissao">
         <mat-animated-icon start="check" end="check" colorStart="none" colorEnd="none" [animate]="animate">
+        </mat-animated-icon>
+    </div>
+    <div class="icon2" *ngIf="!permissao">
+        <mat-animated-icon start="close" end="close" colorStart="blue" colorEnd="blue" [animate]="animate">
         </mat-animated-icon>
     </div>
 </div>

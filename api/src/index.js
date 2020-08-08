@@ -13,7 +13,8 @@ var socket = require('./controllers/socket-controller');
 mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/plate-control', {
     useNewUrlParser: true,
     useFindAndModify: false,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
 }).then(() => {
     log('Mongo ON');
 });

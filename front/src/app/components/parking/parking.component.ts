@@ -58,7 +58,9 @@ export class ParkingComponent implements OnInit {
   buscar() {
     this.requisicao.buscar(`estacionamento-usuario/${Number(localStorage.getItem('user'))}`).then(response => {
       if (response.status === 0) {
-        this.parking = response.message[0];
+        if (response.message.length) {
+          this.parking = response.message[0];
+        }
       } else {
         this.config.duration = 5000;
         this._snackBar.open('Falha ao buscar.', undefined, this.config);

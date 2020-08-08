@@ -39,7 +39,8 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   corControl = new FormControl('', [Validators.required]);
   cidadeControl = new FormControl('');
   estadoControl = new FormControl('');
-  numeroPlacaControl = new FormControl('', [Validators.required]);
+  numeroPlacaNovaControl = new FormControl('');
+  numeroPlacaAntigaControl = new FormControl('');
 
   veicleForm: FormGroup = new FormGroup({
     modelo: this.modeloControl,
@@ -47,7 +48,8 @@ export class VeiclesComponent implements OnInit, OnDestroy {
     cor: this.corControl,
     cidade: this.cidadeControl,
     estado: this.estadoControl,
-    numeroPlaca: this.numeroPlacaControl,
+    numeroPlacaNova: this.numeroPlacaNovaControl,
+    numeroPlacaAntiga: this.numeroPlacaAntigaControl,
   });
 
   config = new MatSnackBarConfig();
@@ -216,8 +218,10 @@ export class VeiclesComponent implements OnInit, OnDestroy {
   buscarEstados() {
     this.requisicao.buscar('estado').then(response => {
       if (response.status === 0) {
-        this.estados = response.message;
-        this.veicle.estado = this.estados[0]._id;
+        if (response.message.length) {
+          this.estados = response.message;
+          this.veicle.estado = this.estados[0]._id;
+        }
       } else {
         this.config.duration = 5000;
         this._snackBar.open('Falha ao buscar.', undefined, this.config);
@@ -239,16 +243,6 @@ export class VeiclesComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  getMask(value) {
-    this.mascara = '';
-    if (value) {
-      this.mascara = 'SSS0S00';
-    } else {
-      this.mascara = 'SSS-0000';
-    }
-    this.veicle.placaNova = value;
   }
 
   clearStorage() {

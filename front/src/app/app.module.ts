@@ -58,6 +58,7 @@ import { RecuperarSenhaComponent } from './components/recuperar-senha/recuperar-
 import { RegisterComponent } from './components/register/register.component';
 import { ParkingComponent } from './components/parking/parking.component';
 import { VeiclesComponent } from './components/veicles/veicles.component';
+import { VeiclesParkingComponent } from './components/veicles-parking/veicles-parking.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatAnimatedIconComponent } from './components/mat-animated-icon/mat-animated-icon.component';
 
@@ -104,7 +105,8 @@ export const customCurrencyMaskConfig = {
     VeiclesComponent,
     DialogComponent,
     MatAnimatedIconComponent,
-    VarDirective
+    VarDirective,
+    VeiclesParkingComponent,
   ],
   imports: [
     BrowserModule,

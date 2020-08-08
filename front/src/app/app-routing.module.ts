@@ -10,6 +10,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ParkingComponent } from './components/parking/parking.component';
 import { VeiclesComponent } from './components/veicles/veicles.component';
+import { VeiclesParkingComponent } from './components/veicles-parking/veicles-parking.component';
 
 const rotas: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -22,6 +23,7 @@ const rotas: Routes = [
       { path: 'profile', component: ProfileComponent, canActivate: [AutenticacaoGuard] },
       { path: 'parking', component: ParkingComponent, canActivate: [AutenticacaoGuard] },
       { path: 'veicles', component: VeiclesComponent, canActivate: [AutenticacaoGuard] },
+      { path: 'veicles-parking', component: VeiclesParkingComponent, canActivate: [AutenticacaoGuard] },
     ]
   },
   { path: '**', component: NotFoundComponent }

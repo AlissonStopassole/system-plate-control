@@ -4,7 +4,7 @@
             <mat-card-title>Cadastro de Veículos</mat-card-title>
             <section class="section" [hidden]="!cadastrar">
                 <mat-slide-toggle class="margin" [checked]="veicle.placaNova" [disabled]="editando"
-                    (change)="getMask(!veicle.placaNova)">
+                    (change)="veicle.placaNova = !veicle.placaNova">
                     Placa Mercosul
                 </mat-slide-toggle>
             </section>
@@ -56,12 +56,18 @@
                             </mat-select>
                         </mat-form-field>
                     </mat-grid-tile>
-                    <mat-grid-tile colspan="1" rowspan="1">
+                    <mat-grid-tile colspan="1" rowspan="1" *ngIf="!veicle.placaNova">
                         <mat-form-field class="full-width">
-                            <input matInput style="text-transform: uppercase;"
-                                placeholder="Número da Placa: {{mascara}}" name="numeroPlaca"
-                                [formControl]="numeroPlacaControl" mask="{{mascara}}" [(ngModel)]="veicle.numeroPlaca"
-                                required>
+                            <input matInput style="text-transform: uppercase;" placeholder="Número da Placa: AAA-0000"
+                                name="numeroPlacaAntiga" [formControl]="numeroPlacaAntigaControl" mask="SSS-0000"
+                                [(ngModel)]="veicle.numeroPlaca">
+                        </mat-form-field>
+                    </mat-grid-tile>
+                    <mat-grid-tile colspan="1" rowspan="1" *ngIf="veicle.placaNova">
+                        <mat-form-field class="full-width">
+                            <input matInput style="text-transform: uppercase;" placeholder="Número da Placa: AAA0A00"
+                                name="numeroPlacaNova" [formControl]="numeroPlacaNovaControl" mask="SSS0S00"
+                                [(ngModel)]="veicle.numeroPlaca">
                         </mat-form-field>
                     </mat-grid-tile>
                 </mat-grid-list>
@@ -69,11 +75,11 @@
                 <mat-grid-list cols="2" rowHeight="100px">
                     <mat-grid-tile colspan="1" rowspan="1">
                         <button mat-stroked-button color="accent" class="btn-block danger"
-                            (click)=cancelar()>Cancelar</button>
+                            (click)=cancelar()>{{!editando ? 'Voltar' : 'Cancelar'}}</button>
                     </mat-grid-tile>
                     <mat-grid-tile colspan="1" rowspan="1">
                         <button mat-stroked-button color="accent" class="btn-block sucess"
-                            [disabled]="veicleForm.invalid"
+                            [disabled]="veicleForm.invalid || !veicle.numeroPlaca.length"
                             (click)="salvar()">{{!editando ? 'Salvar' : 'Editar'}}</button>
                     </mat-grid-tile>
                 </mat-grid-list>
@@ -101,7 +107,7 @@
         </mat-grid-list>
 
         <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8"
-            *ngIf="pesquisar && dataSource.data.length">
+            *ngIf="pesquisar && dataSource.data.length && dataSource.filteredData.length">
             <ng-container matColumnDef="modelo">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Modelo </th>
                 <td mat-cell *matCellDef="let element"> {{element.modelo}} </td>
@@ -138,7 +144,8 @@
         </table>
     </mat-card>
 
-    <mat-card *ngIf="pesquisar && !dataSource.data.length">
+    <mat-card *ngIf="(pesquisar && !dataSource.data.length) || (pesquisar && !dataSource.filteredData.length
+    )">
         <mat-card-content>
             <form class="form">
                 <p class="ng-template" align="center">Não foi possível localizar nenhum registro.</p>

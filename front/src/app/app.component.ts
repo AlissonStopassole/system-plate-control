@@ -26,17 +26,17 @@ export class AppComponent {
     this.socket.on('new-message', message => {
       autentication.canActivate().then(response => {
         if (message && response) {
-          this.openDialog();
+          this.openDialog(message);
         }
       });
     });
   }
 
-  openDialog(): void {
+  openDialog(message: String): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '600px',
       height: '500px',
-      data: {}
+      data: { message: message }
     });
 
     dialogRef.afterClosed().subscribe(result => {

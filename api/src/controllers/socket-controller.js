@@ -9,11 +9,13 @@ class SocketController {
                 log('Socket OFF');
             });
         });
+
+
     }
 
-    static emit() {
+    static emit(message) {
         log("Emit");
-        cliente.emit('new-message', "1");
+        cliente.emit('new-message', message);
     }
 }
 
