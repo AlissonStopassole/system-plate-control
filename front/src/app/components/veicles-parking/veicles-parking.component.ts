@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { EmitterComponentService } from 'src/app/services/emitter/emiter-component.service';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { RequestService } from 'src/app/services/requisicao/request.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -22,7 +21,7 @@ export class VeiclesParkingComponent implements OnInit, OnDestroy {
   config = new MatSnackBarConfig();
   dataSource = new MatTableDataSource([]);
   selection = new SelectionModel(true, []);
-  displayedColumns: string[] = ['modelo', 'cor', 'ano', 'numeroPlaca', 'select'];
+  displayedColumns: string[] = ['modelo', 'cor', 'ano', 'numeroPlaca'];
 
   constructor(
     private router: Router,
@@ -56,25 +55,6 @@ export class VeiclesParkingComponent implements OnInit, OnDestroy {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
-  }
-
-  checkboxLabel(row?: any): any {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
   }
 
   clearStorage() {
