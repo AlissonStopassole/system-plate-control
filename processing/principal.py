@@ -8,7 +8,7 @@ from PIL import Image
 
 def cropImage(image, rect):
     x, y, w, h = computeSafeRegion(image.shape, rect)
-    return image[y : y + h, x : x + w]
+    return image[y: y + h, x: x + w]
 
 
 def computeSafeRegion(shape, bounding_rect):
@@ -46,7 +46,7 @@ def cropImageContorn(image, resize_h=720, en_scale=1.08, top_bottom_padding_rate
 
     image = cv2.resize(image, (int(scale * resize_h), resize_h))
 
-    image_color_cropped = image[padding : resize_h - padding, 0 : image.shape[1]]
+    image_color_cropped = image[padding: resize_h - padding, 0: image.shape[1]]
 
     image = cv2.cvtColor(image_color_cropped, cv2.COLOR_RGB2GRAY)
 
@@ -63,7 +63,8 @@ def cropImageContorn(image, resize_h=720, en_scale=1.08, top_bottom_padding_rate
         y -= h * 0.15
         h += h * 0.3
 
-        cropped = cropImage(image_color_cropped, (int(x), int(y), int(w), int(h)))
+        cropped = cropImage(image_color_cropped,
+                            (int(x), int(y), int(w), int(h)))
         return cropped
 
 
@@ -159,7 +160,7 @@ def filter(src):
         if perimetro > 50:
             # aproxima os contornos da forma correspondente
             (x, y, alt, lar) = cv2.boundingRect(c)
-            crop = src[y : y + lar, x : x + alt]
+            crop = src[y: y + lar, x: x + alt]
             cv2.rectangle(src, (x, y), (x + alt, y + lar), (0, 255, 0), 2)
             scale = crop.shape[1] / float(crop.shape[0])
             if round(scale) == 0 or round(scale) == 1:
