@@ -4,6 +4,7 @@ import webcolors
 import time
 from matplotlib import pyplot as plt
 from PIL import Image
+import pytesseract  # Módulo para a utilização da tecnologia OCR
 
 
 def cropImage(image, rect):
@@ -178,7 +179,7 @@ def filter(src):
 if __name__ == "__main__":
     t1 = time.time()
     originalImg = cv2.imread(
-        "teste1.png"
+        "teste2.png"
     )
     cv2.imshow("ORIGINAL", originalImg)
     cv2.waitKey(0)
@@ -198,8 +199,12 @@ if __name__ == "__main__":
     images = grayscalePlate()
     # # Pega a posição do list
     # images[2]
-    plt.imshow(images[1], "gray")
+    plt.imshow(images[3], "gray")
     plt.show()
+
+    pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract.exe'
+
+    print(pytesseract.image_to_string(images[3]))
 
     # filter(images[2])
 

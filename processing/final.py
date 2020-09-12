@@ -2,11 +2,15 @@ import cv2
 import numpy as np
 import webcolors
 import time
+import pytesseract  # Módulo para a utilização da tecnologia OCR
+import random as rng
 
 # Corta a imagem da placa
+
+
 def cropImage(image, rect):
     x, y, w, h = computeSafeRegion(image.shape, rect)
-    return image[y : y + h, x : x + w]
+    return image[y: y + h, x: x + w]
 
 
 # Localiza a imagem da placa
@@ -41,10 +45,9 @@ def cropImageContorn(image, resize_h=720, en_scale=1.08, top_bottom_padding_rate
     padding = int(height * top_bottom_padding_rate)
     scale = image.shape[1] / float(image.shape[0])
     image = cv2.resize(image, (int(scale * resize_h), resize_h))
-    image_color_cropped = image[padding : resize_h - padding, 0 : image.shape[1]]
+    image_color_cropped = image[padding: resize_h - padding, 0: image.shape[1]]
     image = cv2.cvtColor(image_color_cropped, cv2.COLOR_RGB2GRAY)
-    cv2.imshow("GRAY", image)
-    cv2.waitKey(0)
+
     watches = watch_cascade.detectMultiScale(
         image, en_scale, 2, minSize=(36, 9), maxSize=(36 * 40, 9 * 40)
     )
@@ -53,10 +56,12 @@ def cropImageContorn(image, resize_h=720, en_scale=1.08, top_bottom_padding_rate
 
         x -= w * 0.14
         w += w * 0.28
+
         y -= h * 0.15
         h += h * 0.3
 
-        cropped = cropImage(image_color_cropped, (int(x), int(y), int(w), int(h)))
+        cropped = cropImage(image_color_cropped,
+                            (int(x), int(y), int(w), int(h)))
         return cropped
 
 
@@ -72,8 +77,6 @@ def findCorBlueInPlate(cropedImage):
 
     # Matiz (tonalidade), Saturação, Valor (brilho) de 0 a 100%;
     hsv = cv2.cvtColor(cropedImage, cv2.COLOR_BGR2HSV)
-    cv2.imshow("HSV", hsv)
-    cv2.waitKey(0)
     # define range of blue color in HSV
     lower_blue = np.array([50, 50, 50])
     upper_blue = np.array([130, 255, 255])
@@ -82,8 +85,8 @@ def findCorBlueInPlate(cropedImage):
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(cropedImage, cropedImage, mask=mask)
     # obtem uma lista de RBG da imagem
-    cv2.imshow("AZUL", res)
-    cv2.waitKey(0)
+    # cv2.imshow("AZUL", res)
+    # cv2.waitKey(0)
     b, g, r = cv2.split(res)
     rgb = cv2.merge([r, g, b])
 
@@ -107,11 +110,23 @@ def findCorBlueInPlate(cropedImage):
     return False
 
 
-if __name__ == "__main__":
-    originalImg = cv2.imread("teste3.png")
+def grayscalePlate():
+    cropedImage = cv2.imread("cropImage.png", 0)
+    # cropedImage = cv2.medianBlur(cropedImage, 5)
+    ret, th1 = cv2.threshold(cropedImage, 127, 255, cv2.THRESH_BINARY)
+    th2 = cv2.adaptiveThreshold(
+        cropedImage, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2
+    )
+    th3 = cv2.adaptiveThreshold(
+        cropedImage, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
+    )
+    # retorna 4 tipos de Threshold
+    images = [th1, th2, th3]
+    return images
 
-    cv2.imshow("ORIGINAL", originalImg)
-    cv2.waitKey(0)
+
+if __name__ == "__main__":
+    originalImg = cv2.imread("teste2.png")
 
     t1 = time.time()
     try:
@@ -123,6 +138,17 @@ if __name__ == "__main__":
         cv2.waitKey(0)
         contAzul = findCorBlueInPlate(cropedImage)
 
+        cv2.imwrite("cropImage.png", cropedImage)
+        images = grayscalePlate()
+
+        cv2.imwrite("pretoebranco.png", images[1])
+        cv2.imshow("corte", images[1])
+        cv2.waitKey(0)
+
+        pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract.exe'
+
+        print(pytesseract.image_to_string(images[1], config='--psm 10'))
+
         if contAzul:
             print("Placa Nova")
         else:
@@ -133,4 +159,3 @@ if __name__ == "__main__":
     finally:
         t2 = time.time()
         print(t2 - t1)
-

@@ -5,6 +5,7 @@ import webcolors
 import time
 from matplotlib import pyplot as plt
 from PIL import Image
+import pytesseract  # Módulo para a utilização da tecnologia OCR
 
 
 # Plate detect
@@ -90,9 +91,6 @@ def findCorBlueInPlate(cropedImage):
     # Bitwise-AND mask and original image
     res = cv2.bitwise_and(cropedImage, cropedImage, mask=mask)
     # Plot image mostrando soment o azul
-    cv2.imwrite("ImageBlue.png", res)
-    cv2.imshow("Image", res)
-    cv2.waitKey()
 
     # obtem uma lista de RBG da imagem
     b, g, r = cv2.split(res)
@@ -117,6 +115,9 @@ def findCorBlueInPlate(cropedImage):
                     return True
     return False
 
+# Tons de Preto
+# ------------------------------------------------
+
 
 def grayscalePlate():
     cropedImage = cv2.imread("cropImage.png", 0)
@@ -133,49 +134,8 @@ def grayscalePlate():
     return images
 
 
-def filter(src):
-    # src = cv2.resize(src, (400, 130))
-
-    # cv2.imshow("Contours", src)
-    # cv2.waitKey(0)
-
-    # cinza = cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
-
-    # # Pega mais forma com 200
-    # canny_output = cv2.Canny(cinza, 200, 200 * 2)
-
-    # cv2.imshow("Contours", canny_output)
-    # cv2.waitKey(0)
-
-    contours, _ = cv2.findContours(src, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
-    contours_poly = [None] * len(contours)
-    boundRect = [None] * len(contours)
-
-    for i, c in enumerate(contours):
-        contours_poly[i] = cv2.approxPolyDP(c, 3, True)
-        boundRect[i] = cv2.boundingRect(contours_poly[i])
-
-    i = 0
-    for c in contours:
-        # perimetro do contorno, verifica se o contorno é fechado
-        perimetro = cv2.arcLength(c, True)
-        if perimetro > 50:
-            # aproxima os contornos da forma correspondente
-            (x, y, alt, lar) = cv2.boundingRect(c)
-            crop = src[y: y + lar, x: x + alt]
-            cv2.rectangle(src, (x, y), (x + alt, y + lar), (0, 255, 0), 2)
-            scale = crop.shape[1] / float(crop.shape[0])
-            if round(scale) == 0 or round(scale) == 1:
-                print(perimetro, scale)
-                cv2.imshow("Contours", crop)
-                # cv2.imwrite("cortes/" + str(perimetro) + ".png", crop)
-                cv2.waitKey(0)
-
-            i += 1
-
-    cv2.imshow("Contours", src)
-    cv2.waitKey(0)
+# Inicio
+# ------------------------------------
 
 
 def getPlate(frame):
@@ -188,15 +148,29 @@ def getPlate(frame):
     if cropedImage is None:
         return
 
+    # cv2.imshow("corte", cropedImage)
+    # cv2.waitKey(0)
+
     contAzul = findCorBlueInPlate(cropedImage)
 
+    cv2.imwrite("cropImage.png", cropedImage)
     images = grayscalePlate()
     # # Pega a posição do list
     # images[2]
-    plt.imshow(images[1], "gray")
-    plt.show()
 
-    # filter(images[2])
+    cv2.imshow("gray", cv2.resize(images[1], (400, 130)))
+    cv2.waitKey(0)
+
+    cv2.imshow("gray", cv2.resize(images[2], (400, 130)))
+    cv2.waitKey(0)
+
+    cv2.imshow("gray", cv2.resize(images[3], (400, 130)))
+    cv2.waitKey(0)
+
+    pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract.exe'
+
+    print(pytesseract.image_to_string(cv2.resize(
+        images[1], (400, 130)), config='--psm 12'))
 
     if contAzul:
         print("Placa Nova")
@@ -209,12 +183,12 @@ def getPlate(frame):
 
 # Veicle detect
 # ----------------------------------------------------------------
-largura_min = 10  # Largura minima do retangulo
-altura_min = 10  # Altura minima do retangulo
+largura_min = 200  # Largura minima do retangulo
+altura_min = 100  # Altura minima do retangulo
 
 offset = 6  # Erro permitido entre pixel
 
-pos_linha = 280  # Posição da linha de contagem
+pos_linha = 400  # Posição da linha de contagem
 
 delay = 60  # FPS do vídeo
 
@@ -230,7 +204,8 @@ def pega_centro(x, y, w, h):
     return cx, cy
 
 
-cap = cv2.VideoCapture('Freewa.mp4')
+cap = cv2.VideoCapture(
+    'Desfile de Viaturas do Corpo de Bombeiros do Paraná.mp4')
 subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
 
 while True:
@@ -250,7 +225,7 @@ while True:
     contorno, h = cv2.findContours(
         dilatada, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
-    cv2.line(frame1, (25, pos_linha), (1200, pos_linha), (255, 127, 0), 3)
+    cv2.line(frame1, (10, pos_linha), (400, pos_linha), (255, 127, 0), 3)
 
     for(i, c) in enumerate(contorno):
         (x, y, w, h) = cv2.boundingRect(c)
@@ -266,14 +241,10 @@ while True:
         for (x, y) in detec:
             if y < (pos_linha+offset) and y > (pos_linha-offset):
                 carros += 1
-                cv2.line(frame1, (25, pos_linha),
-                         (1200, pos_linha), (0, 127, 255), 3)
+                cv2.line(frame1, (10, pos_linha),
+                         (400, pos_linha), (0, 127, 255), 3)
                 detec.remove((x, y))
                 getPlate(frame1)
-
-    cv2.putText(frame1, "VEICULOS: "+str(carros), (0, 70),
-                cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 5)
-    cv2.imshow("Video Original", frame1)
 
     if cv2.waitKey(1) == 27:
         break
