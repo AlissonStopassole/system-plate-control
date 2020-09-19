@@ -351,7 +351,7 @@ from keras.models import load_model
 model=load_model('modelo.h5')
 
 while(True):
-    file = 'cap3.png'
+    file = '3.png'
         
     test_image = cv2.imread(file)
     test_image=cv2.cvtColor(test_image, cv2.COLOR_BGR2GRAY)
