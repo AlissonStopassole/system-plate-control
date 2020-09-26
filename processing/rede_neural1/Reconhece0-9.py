@@ -31,7 +31,7 @@ img_data_list=[]
 
 for dataset in data_dir_list:
     img_list=os.listdir(data_path+'/'+ dataset)
-    # print ('Loaded the images of dataset-'+'{}\n'.format(dataset))
+    print ('Loaded the images of dataset-'+'{}\n'.format(dataset))
     for img in img_list:
         input_img=cv2.imread(data_path + '/'+ dataset + '/'+ img )
         input_img=cv2.cvtColor(input_img, cv2.COLOR_BGR2GRAY)
@@ -115,16 +115,16 @@ num_of_samples = img_data.shape[0]
 labels = np.ones((num_of_samples,),dtype='int64')
 
 #Alterar-Mudar
-labels[   0:  17]  =0
-labels[  17:  34]  =1
-labels[  34:  51]  =2
-labels[  51:  68]  =3
-labels[  68:  85]  =4
-labels[  85: 102]  =5
-labels[ 102: 119]  =6
-labels[ 119: 136]  =7
-labels[ 136: 153]  =8
-labels[ 153: 170]  =9
+labels[ 0: 1]  =0
+labels[ 1: 3]  =1
+labels[ 3: 5]  =2
+labels[ 5: 7]  =3
+labels[ 7: 9]  =4
+labels[ 9:11]  =5
+labels[11:13]  =6
+labels[13:15]  =7
+labels[15:17]  =8
+labels[17:19]  =9
       
 names = ['0','1','2','3','4','5','6','7','8','9']
       
@@ -347,8 +347,8 @@ plt.show()
 #%%
 
 from keras.models import load_model
-# model.save('modelo.h5')
-model=load_model('modelo.h5')
+model.save('modelo09.h5')
+model=load_model('modelo09.h5')
 
 while(True):
     file = '3.png'
@@ -404,25 +404,23 @@ while(True):
     print(Posicao)
     if  (Posicao == 0 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 0 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 1 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 1 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 1 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 2 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 2 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 2 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 3 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 3 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 3 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 4 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 4 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 4 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 5 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 5 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 5 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 6 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 6 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 6 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 7 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 7 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 7 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 8 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 8 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 8 {Percentual[0][Posicao]*100}%')
-    elif(Posicao == 9 and Percentual[0][Posicao]> 0.50):
+    if(Posicao == 9 and Percentual[0][Posicao]> 0.50):
         print(f'Numero 9 {Percentual[0][Posicao]*100}%')
-    else:
-        print(f'Desconhecido. Melhore sua caligrafia!')
         
     time.sleep(1)
