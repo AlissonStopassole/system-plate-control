@@ -1,4 +1,4 @@
-num_epoch=200
+num_epoch=5000
 
 import time
 # from IPython import get_ipython
