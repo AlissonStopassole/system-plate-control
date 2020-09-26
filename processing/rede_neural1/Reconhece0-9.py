@@ -197,35 +197,35 @@ model.layers[0].trainable
 #----------------------------------------------------
 
 
-# hist = model.fit(X_train, y_train, batch_size=16, nb_epoch=num_epoch, verbose=1, validation_data=(X_test, y_test))
+hist = model.fit(X_train, y_train, batch_size=16, nb_epoch=num_epoch, verbose=1, validation_data=(X_test, y_test))
 
-# # visualizing losses and accuracy
-# train_loss=hist.history['loss']
-# val_loss=hist.history['val_loss']
-# train_acc=hist.history['acc']
-# val_acc=hist.history['val_acc']
-# xc=range(num_epoch)
+# visualizing losses and accuracy
+train_loss=hist.history['loss']
+val_loss=hist.history['val_loss']
+train_acc=hist.history['acc']
+val_acc=hist.history['val_acc']
+xc=range(num_epoch)
 
-# plt.figure(1,figsize=(7,5))
-# plt.plot(xc,train_loss)
-# plt.plot(xc,val_loss)
-# plt.xlabel('num of Epochs')
-# plt.ylabel('loss')
-# plt.title('train_loss vs val_loss')
-# plt.grid(True)
-# plt.legend(['train','val'])
-# #print plt.style.available # use bmh, classic,ggplot for big pictures
-# plt.style.use(['classic'])
+plt.figure(1,figsize=(7,5))
+plt.plot(xc,train_loss)
+plt.plot(xc,val_loss)
+plt.xlabel('num of Epochs')
+plt.ylabel('loss')
+plt.title('train_loss vs val_loss')
+plt.grid(True)
+plt.legend(['train','val'])
+#print plt.style.available # use bmh, classic,ggplot for big pictures
+plt.style.use(['classic'])
 
-# plt.figure(2,figsize=(7,5))
-# plt.plot(xc,train_acc)
-# plt.plot(xc,val_acc)
-# plt.xlabel('num of Epochs')
-# plt.ylabel('accuracy')
-# plt.title('train_acc vs val_acc')
-# plt.grid(True)
-# plt.legend(['train','val'],loc=4)
-# plt.style.use(['classic'])
+plt.figure(2,figsize=(7,5))
+plt.plot(xc,train_acc)
+plt.plot(xc,val_acc)
+plt.xlabel('num of Epochs')
+plt.ylabel('accuracy')
+plt.title('train_acc vs val_acc')
+plt.grid(True)
+plt.legend(['train','val'],loc=4)
+plt.style.use(['classic'])
 
 
 #----------------------------------------------------

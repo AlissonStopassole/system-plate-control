@@ -5,8 +5,8 @@ import webcolors
 import time
 from matplotlib import pyplot as plt
 from PIL import Image
-import pytesseract  # Módulo para a utilização da tecnologia OCR
-
+import segment_image
+from urllib.request import urlopen
 
 # Plate detect
 # --------------------------------------------------------------------
@@ -14,7 +14,7 @@ import pytesseract  # Módulo para a utilização da tecnologia OCR
 
 def cropImage(image, rect):
     x, y, w, h = computeSafeRegion(image.shape, rect)
-    return image[y: y + h, x: x + w]
+    return image[y:y + h, x:x + w]
 
 
 def computeSafeRegion(shape, bounding_rect):
@@ -38,7 +38,10 @@ def computeSafeRegion(shape, bounding_rect):
     return [left, top, right - left, bottom - top]
 
 
-def cropImageContorn(image, resize_h=720, en_scale=1.08, top_bottom_padding_rate=0.05):
+def cropImageContorn(image,
+                     resize_h=720,
+                     en_scale=1.08,
+                     top_bottom_padding_rate=0.05):
     if top_bottom_padding_rate > 0.2:
         exit(1)
 
@@ -52,13 +55,15 @@ def cropImageContorn(image, resize_h=720, en_scale=1.08, top_bottom_padding_rate
 
     image = cv2.resize(image, (int(scale * resize_h), resize_h))
 
-    image_color_cropped = image[padding: resize_h - padding, 0: image.shape[1]]
+    image_color_cropped = image[padding:resize_h - padding, 0:image.shape[1]]
 
     image = cv2.cvtColor(image_color_cropped, cv2.COLOR_RGB2GRAY)
 
-    watches = watch_cascade.detectMultiScale(
-        image, en_scale, 2, minSize=(36, 9), maxSize=(36 * 40, 9 * 40)
-    )
+    watches = watch_cascade.detectMultiScale(image,
+                                             en_scale,
+                                             2,
+                                             minSize=(36, 9),
+                                             maxSize=(36 * 40, 9 * 40))
     # cropped_images = []
     for (x, y, w, h) in watches:
 
@@ -82,7 +87,6 @@ def findCorBlueInPlate(cropedImage):
         cropedImage = cv2.cvtColor(img_to_yuv, cv2.COLOR_YUV2BGR)
 
     hsv = cv2.cvtColor(cropedImage, cv2.COLOR_BGR2HSV)
-    cv2.imwrite("cropImageGray2.png", hsv)
     # define range of blue color in HSV
     lower_blue = np.array([50, 50, 50])
     upper_blue = np.array([130, 255, 255])
@@ -101,19 +105,16 @@ def findCorBlueInPlate(cropedImage):
     for i in range(len(rgb)):
         for k in range(len(rgb[0])):
             corAtual = webcolors.rgb_to_hex(
-                (((rgb[i])[k][0]), ((rgb[i])[k][1]), ((rgb[i])[k][2]))
-            )
+                (((rgb[i])[k][0]), ((rgb[i])[k][1]), ((rgb[i])[k][2])))
             # invalida cor preta e busca por ocorrencia de azul = "#00"
             # invalida cor contorno do recorte 00ff00
-            if (
-                corAtual != "#000000"
-                and corAtual != "#00ff00"
-                and corAtual[:3] == "#00"
-            ):
+            if (corAtual != "#000000" and corAtual != "#00ff00"
+                    and corAtual[:3] == "#00"):
                 azul += 1
                 if azul > 1:
                     return True
     return False
+
 
 # Tons de Preto
 # ------------------------------------------------
@@ -121,14 +122,14 @@ def findCorBlueInPlate(cropedImage):
 
 def grayscalePlate():
     cropedImage = cv2.imread("cropImage.png", 0)
+    cropedImage = cv2.resize(cropedImage, (420, 130))
     # cropedImage = cv2.medianBlur(cropedImage, 5)
     ret, th1 = cv2.threshold(cropedImage, 127, 255, cv2.THRESH_BINARY)
-    th2 = cv2.adaptiveThreshold(
-        cropedImage, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2
-    )
-    th3 = cv2.adaptiveThreshold(
-        cropedImage, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2
-    )
+    th2 = cv2.adaptiveThreshold(cropedImage, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
+                                cv2.THRESH_BINARY, 11, 2)
+    th3 = cv2.adaptiveThreshold(cropedImage, 255,
+                                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                                cv2.THRESH_BINARY, 11, 2)
     # retorna 4 tipos de Threshold
     images = [cropedImage, th1, th2, th3]
     return images
@@ -141,29 +142,23 @@ def grayscalePlate():
 def getPlate(frame):
     t1 = time.time()
 
-    cropedImage = cropImageContorn(
-        frame, frame.shape[0], top_bottom_padding_rate=0.1
-    )
+    cropedImage = cropImageContorn(frame,
+                                   frame.shape[0],
+                                   top_bottom_padding_rate=0.1)
 
     if cropedImage is None:
         return
 
-    # cv2.imshow("corte", cropedImage)
-    # cv2.waitKey(0)
-
     contAzul = findCorBlueInPlate(cropedImage)
+
+    norm_img = np.zeros((800, 800))
+    cropedImage = cv2.normalize(cropedImage, norm_img, 0, 255, cv2.NORM_MINMAX)
 
     cv2.imwrite("cropImage.png", cropedImage)
     images = grayscalePlate()
     # # Pega a posição do list
     # images[2]
-
-    cv2.imshow("crop",cropedImage)
-
-    pytesseract.pytesseract.tesseract_cmd = 'C:/Program Files (x86)/Tesseract-OCR/tesseract.exe'
-
-    print(pytesseract.image_to_string(cv2.resize(
-        images[1], (400, 130)), config='--psm 12'))
+    cv2.imwrite("grayCrop.png", images[2])
 
     if contAzul:
         print("Placa Nova")
@@ -172,6 +167,13 @@ def getPlate(frame):
 
     t2 = time.time()
     print("Tempo", t2 - t1)
+
+    segment_image.segmentar()
+
+    try:
+        urlopen("http://localhost:3000/new-veicle/AIK1466/{contAzul}").read()
+    except:
+        print("Erro")
 
 
 # Veicle detect
@@ -197,8 +199,7 @@ def pega_centro(x, y, w, h):
     return cx, cy
 
 
-cap = cv2.VideoCapture(
-    'video_brasa_garagem.mp4')
+cap = cv2.VideoCapture('video_brasa_garagem.mp4')
 subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
 
 while True:
@@ -206,8 +207,8 @@ while True:
     frame1 = cv2.rotate(frame1, cv2.ROTATE_90_COUNTERCLOCKWISE)
     frame1 = cv2.rotate(frame1, cv2.ROTATE_90_COUNTERCLOCKWISE)
     frame1 = cv2.rotate(frame1, cv2.ROTATE_90_COUNTERCLOCKWISE)
-    tempo = float(1/delay)
-    sleep(tempo)
+    tempo = float(1 / delay)
+    # sleep(tempo)
     if frame1 is None:
         break
     grey = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
@@ -215,31 +216,33 @@ while True:
     img_sub = subtracao.apply(blur)
     dilat = cv2.dilate(img_sub, np.ones((5, 5)))
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-    dilatada = cv2.morphologyEx(dilat, cv2. MORPH_CLOSE, kernel)
-    dilatada = cv2.morphologyEx(dilatada, cv2. MORPH_CLOSE, kernel)
+    dilatada = cv2.morphologyEx(dilat, cv2.MORPH_CLOSE, kernel)
+    dilatada = cv2.morphologyEx(dilatada, cv2.MORPH_CLOSE, kernel)
 
-    contorno, h = cv2.findContours(
-        dilatada, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+    contorno, h = cv2.findContours(dilatada, cv2.RETR_TREE,
+                                   cv2.CHAIN_APPROX_SIMPLE)
 
     cv2.line(frame1, (10, pos_linha), (320, pos_linha), (255, 127, 0), 3)
 
-    for(i, c) in enumerate(contorno):
+    for (i, c) in enumerate(contorno):
         (x, y, w, h) = cv2.boundingRect(c)
-        validar_contorno = (w >= largura_min)and (w <= largura_min * 1.2) and (h >= altura_min) and (h <= altura_min  *1.2)
+        validar_contorno = (w >=
+                            largura_min) and (w <= largura_min * 1.2) and (
+                                h >= altura_min) and (h <= altura_min * 1.2)
         # validar_contorno = (w >= largura_min) and (h >= altura_min)
         if not validar_contorno:
             continue
 
-        cv2.rectangle(frame1, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.rectangle(frame1, (x, y), (x + w, y + h), (0, 255, 0), 2)
         centro = pega_centro(x, y, w, h)
         detec.append(centro)
         cv2.circle(frame1, centro, 4, (0, 0, 255), -1)
 
         for (x, y) in detec:
-            if y < (pos_linha+offset) and y > (pos_linha-offset):
+            if y < (pos_linha + offset) and y > (pos_linha - offset):
                 carros += 1
-                cv2.line(frame1, (10, pos_linha),
-                         (320, pos_linha), (0, 127, 255), 3)
+                cv2.line(frame1, (10, pos_linha), (320, pos_linha),
+                         (0, 127, 255), 3)
                 detec.remove((x, y))
                 cv2.imshow("Achoiu", frame1)
                 getPlate(frame1)

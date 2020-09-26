@@ -1,12 +1,10 @@
 
 const VeiculoModel = require('../models/veiculo-model');
 const ResponseUtils = require('../utils/response-utils');
-var socket = require('../controllers/socket-controller');
 class VeiculoController {
     static async getByIdUsuario(_req, res) {
         try {
             log("Get Veiculos By Usuario");
-            socket.emit("Teste");
             var veiculos = await VeiculoModel.find({ idUsuario: Number(_req.params.id) });
             ResponseUtils.sucesso(res, 0, veiculos);
         } catch (error) {

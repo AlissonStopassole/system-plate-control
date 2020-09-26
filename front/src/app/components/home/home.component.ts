@@ -41,9 +41,9 @@ export class HomeComponent implements OnInit {
       }
     }).then(() => {
       if (this.idEstacionamento) {
-        this.requisicao.buscar(`vagas/${this.idEstacionamento}`).then(response => {
+        this.requisicao.buscar(`get-veicle/${this.idEstacionamento}`).then(response => {
           if (response.status === 0) {
-            this.vagasOcupadas = response.message[0].qtdVagas;
+            this.vagasOcupadas = response.message.length;
           } else {
             this.config.duration = 5000;
             this._snackBar.open('Falha ao buscar.', undefined, this.config);

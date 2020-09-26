@@ -41,9 +41,10 @@ export class VeiclesParkingComponent implements OnInit, OnDestroy {
   }
 
   buscarVeiculosParking() {
-    this.requisicao.buscar(`veiculo-usuario/${Number(localStorage.getItem('user'))}`).then(response => {
+    this.requisicao.buscar(`get-veicle/1`).then(response => {
       if (response.status === 0) {
         this.dataSource = new MatTableDataSource(response.message);
+
         this.dataSource.sort = this.sort;
       } else {
         this.config.duration = 5000;

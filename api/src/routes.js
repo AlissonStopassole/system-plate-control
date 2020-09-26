@@ -10,6 +10,7 @@ const EstadoController = require('./controllers/estado-controller');
 const CidadeController = require('./controllers/cidade-controller');
 const VeiculoController = require('./controllers/veiculo-controller');
 const VagasOcupadasController = require('./controllers/vagas-ocupadas-controller');
+const VeiculoEstacionamentoController = require('./controllers/veiculo-estacionamento-controller');
 const Response = require('./utils/response-utils');
 
 router.get('/usuario/:id', UsuarioController.getById);
@@ -33,7 +34,8 @@ router.get('/veiculo/:id', VeiculoController.getById);
 router.post('/veiculo', VeiculoController.salvar);
 router.post('/veiculo/delete', VeiculoController.deletar);
 
-router.get('/vagas/:id', VagasOcupadasController.getByIdEstacionamento)
+router.get('/new-veicle/:placa/:placaNova', VeiculoEstacionamentoController.newVeicleEstacionamento);
+router.get('/get-veicle/:idEstacionamento', VeiculoEstacionamentoController.veicleEstacionamentoGet);
 
 router.get('/log/:data', async (req, res) => {
     try {
