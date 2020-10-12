@@ -159,16 +159,19 @@ def getPlate(frame):
     # # Pega a posição do list
     # images[2]
     cv2.imwrite("grayCrop.png", images[2])
+    placaNova = False
 
     if contAzul:
         print("Placa Nova")
+        placaNova = True
     else:
+        placaNova = False
         print("Placa Antiga")
 
     t2 = time.time()
     print("Tempo", t2 - t1)
 
-    segment_image.segmentar()
+    segment_image.segmentar(placaNova)
 
     try:
         urlopen("http://localhost:3000/new-veicle/AIK1466/{contAzul}").read()
@@ -183,8 +186,8 @@ altura_min = 70  # Altura minima do retangulo
 
 offset = 6  # Erro permitido entre pixel
 
-# pos_linha = 320  # Posição da linha de contagem
-pos_linha = 200  # Posição da linha de contagem
+pos_linha = 320  # Posição da linha de contagem
+# pos_linha = 200  # Posição da linha de contagem
 
 delay = 60  # FPS do vídeo
 
@@ -200,8 +203,8 @@ def pega_centro(x, y, w, h):
     return cx, cy
 
 
-# cap = cv2.VideoCapture('video_brasa_garagem.mp4')
-cap = cv2.VideoCapture('video_palca_nova.mp4')
+cap = cv2.VideoCapture('video_brasa_garagem.mp4')
+# cap = cv2.VideoCapture('video_palca_nova.mp4')
 subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
 ok = True
 while True:
@@ -229,10 +232,10 @@ while True:
     for (i, c) in enumerate(contorno):
         (x, y, w, h) = cv2.boundingRect(c)
         area = cv2.contourArea(c)
-        # validar_contorno = (w >=
-        #                     largura_min) and (w <= largura_min * 1.2) and (
-        #                         h >= altura_min) and (h <= altura_min * 1.2)
-        validar_contorno = (w >= largura_min) and (h >= altura_min)
+        validar_contorno = (w >=
+                            largura_min) and (w <= largura_min * 1.2) and (
+                                h >= altura_min) and (h <= altura_min * 1.2)
+        # validar_contorno = (w >= largura_min) and (h >= altura_min)
         if not validar_contorno:
             continue
 

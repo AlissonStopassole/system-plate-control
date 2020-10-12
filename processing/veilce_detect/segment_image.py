@@ -8,10 +8,10 @@ import re
 
 def show_image(name, img):
     cv2.imshow(name, img)
-    # cv2.waitKey(0)
+    cv2.waitKey(0)
 
 
-def segmentar():
+def segmentar(placaNova):
     img = cv2.imread("grayCrop.png")
     copia = img.copy()
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -22,6 +22,7 @@ def segmentar():
 
     i = 0
     placa = ""
+    listChar = []
     for cnt in conts:
         area = cv2.contourArea(cnt)
         x, y, w, h = cv2.boundingRect(cnt)
@@ -32,7 +33,15 @@ def segmentar():
                 txt = pytesseract.image_to_string(Image.fromarray(roi),
                                                   config='--psm 10')
                 placa += txt
+                listChar.append({'x': x, 'image': roi})
             except:
                 print(placa)
     show_image('Contornos', copia)
     cv2.waitKey(0)
+
+    listChar = sorted(listChar, key=lambda k: k['x'])
+
+    for img in listChar:
+        print(img['x'])
+        print(placaNova)
+        show_image("image", img['image'])
