@@ -3,7 +3,6 @@ import cv2
 import pytesseract
 import numpy as np
 import urllib.request
-import re
 
 
 def show_image(name, img):
@@ -12,6 +11,7 @@ def show_image(name, img):
 
 
 def segmentar(placaNova):
+    # img = cv2.imread("grayCrop1.png")
     img = cv2.imread("grayCrop.png")
     copia = img.copy()
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -41,7 +41,19 @@ def segmentar(placaNova):
 
     listChar = sorted(listChar, key=lambda k: k['x'])
 
-    for img in listChar:
-        print(img['x'])
-        print(placaNova)
+    for i, img in enumerate(listChar):
+        if placaNova:
+            if i == 0 or i == 1 or i == 2 or i == 4:
+                print("letra")
+            else:
+                processImage(img['image'])
+
+        else:
+            if i == 0 or i == 1 or i == 2:
+                print("letra")
+            else:
+                print("numeros")
+
+        # print(img['x'])
+        # print(placaNova)
         show_image("image", img['image'])

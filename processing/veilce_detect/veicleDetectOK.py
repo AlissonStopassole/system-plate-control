@@ -186,8 +186,8 @@ altura_min = 70  # Altura minima do retangulo
 
 offset = 6  # Erro permitido entre pixel
 
-pos_linha = 320  # Posição da linha de contagem
-# pos_linha = 200  # Posição da linha de contagem
+# pos_linha = 320  # Posição da linha de contagem
+pos_linha = 185  # Posição da linha de contagem
 
 delay = 60  # FPS do vídeo
 
@@ -203,8 +203,8 @@ def pega_centro(x, y, w, h):
     return cx, cy
 
 
-cap = cv2.VideoCapture('video_brasa_garagem.mp4')
-# cap = cv2.VideoCapture('video_palca_nova.mp4')
+# cap = cv2.VideoCapture('video_brasa_garagem.mp4')
+cap = cv2.VideoCapture('video_palca_nova.mp4')
 subtracao = cv2.bgsegm.createBackgroundSubtractorMOG()
 ok = True
 while True:
@@ -212,6 +212,10 @@ while True:
     frame1 = cv2.rotate(frame1, cv2.ROTATE_90_COUNTERCLOCKWISE)
     frame1 = cv2.rotate(frame1, cv2.ROTATE_90_COUNTERCLOCKWISE)
     frame1 = cv2.rotate(frame1, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    ret2, frameaux = cap.read()
+    frameaux = cv2.rotate(frameaux, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    frameaux = cv2.rotate(frameaux, cv2.ROTATE_90_COUNTERCLOCKWISE)
+    frameaux = cv2.rotate(frameaux, cv2.ROTATE_90_COUNTERCLOCKWISE)
     tempo = float(1 / delay)
     # sleep(tempo)
     if frame1 is None:
@@ -232,10 +236,10 @@ while True:
     for (i, c) in enumerate(contorno):
         (x, y, w, h) = cv2.boundingRect(c)
         area = cv2.contourArea(c)
-        validar_contorno = (w >=
-                            largura_min) and (w <= largura_min * 1.2) and (
-                                h >= altura_min) and (h <= altura_min * 1.2)
-        # validar_contorno = (w >= largura_min) and (h >= altura_min)
+        # validar_contorno = (w >=
+        #                     largura_min) and (w <= largura_min * 1.2) and (
+        #                         h >= altura_min) and (h <= altura_min * 1.2)
+        validar_contorno = (w >= largura_min) and (h >= altura_min)
         if not validar_contorno:
             continue
 
@@ -251,11 +255,11 @@ while True:
                     cv2.line(frame1, (10, pos_linha), (320, pos_linha),
                              (0, 127, 255), 3)
                     detec.remove((x, y))
-                    cv2.imshow("Achoiu", frame1)
-                    getPlate(frame1)
+                    cv2.imshow("Achoiu", frameaux)
+                    getPlate(frameaux)
                     ok = False
 
-    cv2.imshow("Video Original", frame1)
+    cv2.imshow("Video Original", frameaux)
     if cv2.waitKey(1) == 27:
         break
 
